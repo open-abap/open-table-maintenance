@@ -7,3 +7,45 @@ Works with:
 * On-Premise v740sp08 and up
 
 Install with [abapGit](https://abapgit.org)
+
+Single class, easy to copy
+
+## Use-case: On-prem shim
+
+```abap
+  METHOD if_http_extension~handle_request.
+
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+      method = server->request->get_method( )
+      path   = server->request->get_header_field( '~path' )
+      body   = server->request->get_data( ) ) ).
+
+    server->response->set_data( result-body ).
+    server->response->set_content_type( result-content_type ).
+    server->response->set_status(
+      code   = result-status
+      reason = CONV #( result-status ) ).
+
+  ENDMETHOD.
+```
+
+## Use-case: Steampunk shim
+
+```abap
+  METHOD if_http_service_extension~handle_request.
+
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+      method = request->get_method( )
+      path   = request->get_header_field( '~path' )
+      body   = request->get_binary( ) ) ).
+
+    response->set_binary( result-body ).
+    response->set_header_field(
+      i_name = 'Content-Type'
+      i_value = result-content_type ).
+    response->set_status(
+      i_code   = result-status
+      i_reason = CONV #( result-status ) ).
+
+  ENDMETHOD.
+```
