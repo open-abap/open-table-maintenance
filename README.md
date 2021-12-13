@@ -10,7 +10,7 @@ Install with [abapGit](https://abapgit.org)
 
 Single class, easy to copy
 
-## Use-case: On-prem wrapping
+## Use-case: On-prem shim
 
 ```abap
   METHOD if_http_extension~handle_request.
@@ -29,7 +29,7 @@ Single class, easy to copy
   ENDMETHOD.
 ```
 
-## Use-case: Steampunk wrapping
+## Use-case: Steampunk shim
 
 ```abap
   METHOD if_http_service_extension~handle_request.
