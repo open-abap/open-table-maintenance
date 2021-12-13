@@ -33,6 +33,8 @@ CLASS zcl_otm_table_maintenance DEFINITION
     METHODS read_table
       RETURNING
         VALUE(rv_json) TYPE string.
+    METHODS save_table
+      IMPORTING iv_json TYPE string.
     METHODS to_json
       IMPORTING
         ref            TYPE REF TO data
@@ -41,7 +43,12 @@ CLASS zcl_otm_table_maintenance DEFINITION
     METHODS get_html
       RETURNING
         VALUE(rv_html) TYPE string.
-
+    METHODS to_xstring
+      IMPORTING string         TYPE string
+      RETURNING VALUE(xstring) TYPE xstring.
+    METHODS from_xstring
+      IMPORTING xstring       TYPE xstring
+      RETURNING VALUE(string) TYPE string.
 
 ENDCLASS.
 
@@ -58,27 +65,62 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD from_xstring.
+    cl_abap_conv_in_ce=>create( )->convert(
+      EXPORTING
+        input = xstring
+      IMPORTING
+        data  = string ).
+  ENDMETHOD.
+
+
   METHOD get_html.
     rv_html = |<!DOCTYPE html>\n| &&
       |<html>\n| &&
       |<head>\n| &&
+      |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>\n| &&
+      |<script src="https://jsuites.net/v4/jsuites.js"></script>\n| &&
+      |<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />\n| &&
+      |<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />\n| &&
       |<script>\n| &&
+      'let jtable;' && |\n| &&
+      'let columnNames;' && |\n| &&
+      'const url = window.location.pathname + "/rest";' && |\n| &&
       'function run() {' && |\n| &&
       '  const Http = new XMLHttpRequest();' && |\n| &&
-      '  console.dir(window.location);' && |\n| &&
-      '  const url = window.location.pathname + "/rest";' && |\n| &&
       '  Http.open("GET", url);' && |\n| &&
       '  Http.send();' && |\n| &&
-      '  Http.onreadystatechange = (e) => {' && |\n| &&
-      '    console.log(Http.responseText)' && |\n| &&
-      '    document.getElementById("content").innerHTML = "blah";' && |\n| &&
+      '  Http.onloadend = (e) => {' && |\n| &&
+      '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
+      '    columnNames = Object.keys(data[0]);' && |\n| &&
+      '    document.getElementById("content").innerHTML = "";' && |\n| &&
+      '    let columnSettings = columnNames.map(n => {return {"title": n};});' && |\n| &&
+      '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
+      '  }' && |\n| &&
+      '}' && |\n| &&
+      'function toObject(row) {' && |\n| &&
+      '  let ret = {};' && |\n| &&
+      '  for (let i = 0; i < columnNames.length; i++) {' && |\n| &&
+      '    ret[columnNames[i]] = row[i];' && |\n| &&
+      '  }' && |\n| &&
+      '  return ret;' && |\n| &&
+      '}' && |\n| &&
+      'function save() {' && |\n| &&
+      '  const body = {"DATA": jtable.getData().map(toObject)};' && |\n| &&
+      '  console.dir(body);' && |\n| &&
+      '  const Http = new XMLHttpRequest();' && |\n| &&
+      '  Http.open("POST", url);' && |\n| &&
+      '  Http.send(JSON.stringify(body));' && |\n| &&
+      '  Http.onloadend = (e) => {' && |\n| &&
+      '    alert("data saved");' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
       |</script>\n| &&
       |</head>\n| &&
       |<body onload="run()">\n| &&
       |<h1>open-table-maintenance</h1>\n| &&
-      |<div id="content">loading</div>\n| &&
+      |<button type="button" onclick="save()">Save</button><br>\n| &&
+      |<div id="content">loading</div><br>\n| &&
       |</body>\n| &&
       |</html>|.
   ENDMETHOD.
@@ -88,12 +130,25 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     FIELD-SYMBOLS <fs> TYPE STANDARD TABLE.
     DATA dref TYPE REF TO data.
-
     CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
     ASSIGN dref->* TO <fs>.
     SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs>.
 
     rv_json = to_json( dref ).
+
+  ENDMETHOD.
+
+
+  METHOD save_table.
+
+    FIELD-SYMBOLS <fs> TYPE STANDARD TABLE.
+    DATA dref TYPE REF TO data.
+    CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
+    ASSIGN dref->* TO <fs>.
+
+    CALL TRANSFORMATION id SOURCE XML iv_json RESULT data = <fs>.
+
+* todo
 
   ENDMETHOD.
 
@@ -109,7 +164,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
         lv_body = read_table( ).
         rs_http-content_type = 'application/json'.
       ELSEIF is_request-method = 'POST'.
-* todo, update
+        save_table( from_xstring( is_request-body ) ).
       ELSE.
         ASSERT 1 = 2.
       ENDIF.
@@ -118,11 +173,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       rs_http-content_type = 'text/html'.
     ENDIF.
 
-    cl_abap_conv_out_ce=>create( )->convert(
-      EXPORTING
-        data   = lv_body
-      IMPORTING
-        buffer = rs_http-body ).
+    rs_http-body = to_xstring( lv_body ).
 
   ENDMETHOD.
 
@@ -139,6 +190,17 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
         input = writer->get_output( )
       IMPORTING
         data = rv_json ).
+
+  ENDMETHOD.
+
+
+  METHOD to_xstring.
+
+    cl_abap_conv_out_ce=>create( )->convert(
+      EXPORTING
+        data   = string
+      IMPORTING
+        buffer = xstring ).
 
   ENDMETHOD.
 ENDCLASS.
