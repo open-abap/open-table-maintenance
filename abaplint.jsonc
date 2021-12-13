@@ -19,11 +19,7 @@
       "exclude": [],
       "severity": "Error"
     },
-    "abapdoc": {
-      "exclude": [],
-      "severity": "Error",
-      "checkLocal": false
-    },
+    "abapdoc": false,
     "align_parameters": {
       "exclude": [],
       "severity": "Error"
@@ -438,10 +434,7 @@
       "severity": "Error",
       "count": 1
     },
-    "line_break_style": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "line_break_style": false,
     "line_length": {
       "exclude": [],
       "severity": "Error",
@@ -512,18 +505,7 @@
       "exclude": [],
       "severity": "Error"
     },
-    "method_parameter_names": {
-      "exclude": [],
-      "severity": "Error",
-      "patternKind": "required",
-      "ignoreNames": [],
-      "ignorePatterns": [],
-      "ignoreExceptions": true,
-      "importing": "^I._.+$",
-      "returning": "^R._.+$",
-      "changing": "^C._.+$",
-      "exporting": "^E._.+$"
-    },
+    "method_parameter_names": false,
     "mix_returning": {
       "exclude": [],
       "severity": "Error"
