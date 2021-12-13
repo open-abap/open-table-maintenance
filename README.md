@@ -9,3 +9,28 @@ Works with:
 Install with [abapGit](https://abapgit.org)
 
 Single class, easy to copy
+
+## Use-case: On-prem wrapping
+
+```abap
+  METHOD if_http_extension~handle_request.
+
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+      method = server->request->get_method( )
+      path   = server->request->get_header_field( '~path' )
+      body   = server->request->get_data( ) ) ).
+
+    server->response->set_data( result-body ).
+    server->response->set_content_type( result-content_type ).
+    server->response->set_status(
+      code   = result-status
+      reason = CONV #( result-status ) ).
+
+  ENDMETHOD.
+```
+
+## Use-case: Steampunk wrapping
+
+```abap
+todo, if_http_service_extension
+```
