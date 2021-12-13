@@ -3,25 +3,28 @@ CLASS zcl_otm_table_maintenance DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    TYPES: BEGIN OF ty_request,
-             method TYPE string,
-             path   TYPE string,
-             body   TYPE xstring,
-           END OF ty_request.
-    TYPES: BEGIN OF ty_http,
-             status       TYPE i,
-             content_type TYPE string,
-             body         TYPE xstring,
-           END OF ty_http.
+
+    TYPES:
+      BEGIN OF ty_request,
+        method TYPE string,
+        path   TYPE string,
+        body   TYPE xstring,
+      END OF ty_request .
+    TYPES:
+      BEGIN OF ty_http,
+        status       TYPE i,
+        content_type TYPE string,
+        body         TYPE xstring,
+      END OF ty_http .
+
     METHODS constructor
       IMPORTING
-        !iv_table TYPE tabname.
+        !iv_table TYPE tabname .
     METHODS serve
       IMPORTING
-        is_request     TYPE ty_request
+        !is_request    TYPE ty_request
       RETURNING
-        VALUE(rs_http) TYPE ty_http.
-
+        VALUE(rs_http) TYPE ty_http .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
