@@ -65,11 +65,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD from_xstring.
-    cl_abap_conv_in_ce=>create( )->convert(
-      EXPORTING
-        input = xstring
-      IMPORTING
-        data  = string ).
+    string = cl_abap_conv_codepage=>create_in( )->convert( xstring ).
   ENDMETHOD.
 
 
@@ -184,20 +180,12 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id SOURCE data = <fs> RESULT XML writer.
-    cl_abap_conv_in_ce=>create( )->convert(
-      EXPORTING
-        input = writer->get_output( )
-      IMPORTING
-        data = rv_json ).
+    rv_json = from_xstring( writer->get_output( ) ).
 
   ENDMETHOD.
 
 
   METHOD to_xstring.
-    cl_abap_conv_out_ce=>create( )->convert(
-      EXPORTING
-        data   = string
-      IMPORTING
-        buffer = xstring ).
+    xstring = cl_abap_conv_codepage=>create_out( )->convert( string ).
   ENDMETHOD.
 ENDCLASS.
