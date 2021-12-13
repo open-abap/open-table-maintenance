@@ -61,9 +61,24 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
   METHOD get_html.
     rv_html = |<!DOCTYPE html>\n| &&
       |<html>\n| &&
-      |<body>\n| &&
-      |<h1>sdfsd</h1>\n| &&
-      |<p>My first paragraph.</p>\n| &&
+      |<head>\n| &&
+      |<script>\n| &&
+      'function run() {' && |\n| &&
+      '  const Http = new XMLHttpRequest();' && |\n| &&
+      '  console.dir(window.location);' && |\n| &&
+      '  const url = window.location.pathname + "/rest";' && |\n| &&
+      '  Http.open("GET", url);' && |\n| &&
+      '  Http.send();' && |\n| &&
+      '  Http.onreadystatechange = (e) => {' && |\n| &&
+      '    console.log(Http.responseText)' && |\n| &&
+      '    document.getElementById("content").innerHTML = "blah";' && |\n| &&
+      '  }' && |\n| &&
+      '}' && |\n| &&
+      |</script>\n| &&
+      |</head>\n| &&
+      |<body onload="run()">\n| &&
+      |<h1>open-table-maintenance</h1>\n| &&
+      |<div id="content">loading</div>\n| &&
       |</body>\n| &&
       |</html>|.
   ENDMETHOD.
@@ -89,9 +104,15 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     rs_http-status = 200.
 
-    IF is_request-path CS '*/rest'.
-      lv_body = '{"foo": "bar"}'.
-      rs_http-content_type = 'application/json'.
+    IF is_request-path CP '*/rest'.
+      IF is_request-method = 'GET'.
+        lv_body = read_table( ).
+        rs_http-content_type = 'application/json'.
+      ELSEIF is_request-method = 'POST'.
+* todo, update
+      ELSE.
+        ASSERT 1 = 2.
+      ENDIF.
     ELSE.
       lv_body = get_html( ).
       rs_http-content_type = 'text/html'.
