@@ -32,5 +32,20 @@ Single class, easy to copy
 ## Use-case: Steampunk wrapping
 
 ```abap
-todo, if_http_service_extension
+  METHOD if_http_service_extension~handle_request.
+
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+      method = request->get_method( )
+      path   = request->get_header_field( '~path' )
+      body   = request->get_binary( ) ) ).
+
+    response->set_binary( result-body ).
+    response->set_header_field(
+      i_name = 'Content-Type'
+      i_value = result-content_type ).
+    response->set_status(
+      i_code   = result-status
+      i_reason = CONV #( result-status ) ).
+
+  ENDMETHOD.
 ```
