@@ -459,16 +459,7 @@
       "exclude": [],
       "severity": "Error"
     },
-    "local_variable_names": {
-      "exclude": [],
-      "severity": "Error",
-      "patternKind": "required",
-      "ignoreNames": [],
-      "ignorePatterns": [],
-      "expectedData": "^L._.+$",
-      "expectedConstant": "^LC_.+$",
-      "expectedFS": "^<L._.+>$"
-    },
+    "local_variable_names": false,
     "main_file_contents": {
       "exclude": [],
       "severity": "Error"
