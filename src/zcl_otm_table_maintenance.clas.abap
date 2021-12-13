@@ -3,19 +3,16 @@ CLASS zcl_otm_table_maintenance DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-
     TYPES: BEGIN OF ty_request,
              method TYPE string,
              path   TYPE string,
              body   TYPE xstring,
            END OF ty_request.
-
     TYPES: BEGIN OF ty_http,
              status       TYPE i,
              content_type TYPE string,
              body         TYPE xstring,
            END OF ty_http.
-
     METHODS constructor
       IMPORTING
         !iv_table TYPE tabname.
@@ -30,26 +27,30 @@ CLASS zcl_otm_table_maintenance DEFINITION
 
     DATA mv_table TYPE tabname .
 
-    METHODS read_table
-      RETURNING
-        VALUE(rv_json) TYPE string.
-    METHODS save_table
-      IMPORTING iv_json TYPE string.
-    METHODS to_json
+    METHODS from_xstring
       IMPORTING
-        ref            TYPE REF TO data
+        !xstring      TYPE xstring
       RETURNING
-        VALUE(rv_json) TYPE string.
+        VALUE(string) TYPE string .
     METHODS get_html
       RETURNING
-        VALUE(rv_html) TYPE string.
+        VALUE(rv_html) TYPE string .
+    METHODS read_table
+      RETURNING
+        VALUE(rv_json) TYPE string .
+    METHODS save_table
+      IMPORTING
+        !iv_json TYPE string .
+    METHODS to_json
+      IMPORTING
+        !ref           TYPE REF TO data
+      RETURNING
+        VALUE(rv_json) TYPE string .
     METHODS to_xstring
-      IMPORTING string         TYPE string
-      RETURNING VALUE(xstring) TYPE xstring.
-    METHODS from_xstring
-      IMPORTING xstring       TYPE xstring
-      RETURNING VALUE(string) TYPE string.
-
+      IMPORTING
+        !string        TYPE string
+      RETURNING
+        VALUE(xstring) TYPE xstring .
 ENDCLASS.
 
 
@@ -58,10 +59,8 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD constructor.
-
     ASSERT iv_table IS NOT INITIAL.
     mv_table = iv_table.
-
   ENDMETHOD.
 
 
@@ -195,12 +194,10 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD to_xstring.
-
     cl_abap_conv_out_ce=>create( )->convert(
       EXPORTING
         data   = string
       IMPORTING
         buffer = xstring ).
-
   ENDMETHOD.
 ENDCLASS.
