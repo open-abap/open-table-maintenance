@@ -677,13 +677,7 @@
       "exclude": [],
       "severity": "Error"
     },
-    "select_performance": {
-      "exclude": [],
-      "severity": "Error",
-      "endSelect": true,
-      "selectStar": true,
-      "starOkayIfFewColumns": 10
-    },
+    "select_performance": false,
     "selection_screen_naming": {
       "exclude": [],
       "severity": "Error",
