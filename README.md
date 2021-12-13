@@ -7,3 +7,5 @@ Works with:
 * On-Premise v740sp08 and up
 
 Install with [abapGit](https://abapgit.org)
+
+Single class, easy to copy
