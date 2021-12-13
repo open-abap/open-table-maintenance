@@ -153,13 +153,11 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
   METHOD serve.
 
-    DATA lv_body TYPE string.
-
     rs_http-status = 200.
 
     IF is_request-path CP '*/rest'.
       IF is_request-method = 'GET'.
-        lv_body = read_table( ).
+        DATA(lv_body) = read_table( ).
         rs_http-content_type = 'application/json'.
       ELSEIF is_request-method = 'POST'.
         save_table( from_xstring( is_request-body ) ).
