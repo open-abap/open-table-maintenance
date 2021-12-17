@@ -10,33 +10,19 @@
   ],
   "syntax": {
     "version": "Cloud",
-    "errorNamespace": ".",
-    "globalConstants": [],
-    "globalMacros": []
+    "errorNamespace": "."
   },
   "rules": {
-    "7bit_ascii": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "7bit_ascii": true,
     "abapdoc": false,
-    "align_parameters": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "allowed_object_naming": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "align_parameters": true,
+    "allowed_object_naming": true,
     "allowed_object_types": {
       "exclude": [],
       "severity": "Error",
       "allowed": []
     },
-    "ambiguous_statement": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "ambiguous_statement": true,
     "avoid_use": {
       "exclude": [],
       "severity": "Error",
@@ -46,18 +32,9 @@
       "break": true,
       "describeLines": true
     },
-    "begin_end_names": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "begin_single_include": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "call_transaction_authority_check": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "begin_end_names": true,
+    "begin_single_include": true,
+    "call_transaction_authority_check": true,
     "chain_mainly_declarations": {
       "exclude": [],
       "severity": "Error",
@@ -73,27 +50,15 @@
       "check": true,
       "sort": true
     },
-    "check_abstract": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "check_abstract": true,
     "check_comments": {
       "exclude": [],
       "severity": "Error",
       "allowEndOfLine": false
     },
-    "check_ddic": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "check_include": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "check_no_handler_pragma": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "check_ddic": true,
+    "check_include": true,
+    "check_no_handler_pragma": true,
     "check_subrc": {
       "exclude": [],
       "severity": "Error",
@@ -108,18 +73,9 @@
       "assign": true,
       "find": true
     },
-    "check_syntax": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "check_text_elements": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "check_transformation_exists": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "check_syntax": true,
+    "check_text_elements": true,
+    "check_transformation_exists": true,
     "class_attribute_names": {
       "exclude": [],
       "severity": "Error",
@@ -133,14 +89,8 @@
       "instance": "^M._.+$",
       "constants": ""
     },
-    "cloud_types": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "colon_missing_space": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "cloud_types": true,
+    "colon_missing_space": true,
     "commented_code": {
       "exclude": [],
       "severity": "Error",
@@ -151,10 +101,7 @@
       "severity": "Error",
       "mapping": []
     },
-    "constructor_visibility_public": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "constructor_visibility_public": true,
     "contains_tab": {
       "exclude": [],
       "severity": "Error",
@@ -186,18 +133,9 @@
       "importDynpro": true,
       "dynamicSQL": true
     },
-    "db_operation_in_loop": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "definitions_top": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "description_empty": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "db_operation_in_loop": true,
+    "definitions_top": true,
+    "description_empty": true,
     "double_space": {
       "exclude": [],
       "severity": "Error",
@@ -206,19 +144,13 @@
       "endParen": true,
       "afterColon": true
     },
-    "downport": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "downport": true,
     "empty_line_in_statement": {
       "exclude": [],
       "severity": "Error",
       "allowChained": false
     },
-    "empty_statement": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "empty_statement": true,
     "empty_structure": {
       "exclude": [],
       "severity": "Error",
@@ -237,10 +169,7 @@
       "allowExit": false,
       "allowCheck": false
     },
-    "exporting": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "exporting": true,
     "forbidden_identifier": {
       "exclude": [],
       "severity": "Error",
@@ -259,10 +188,7 @@
       "severity": "Error",
       "check": []
     },
-    "form_tables_obsolete": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "form_tables_obsolete": true,
     "fully_type_constants": {
       "exclude": [],
       "severity": "Error",
@@ -359,34 +285,13 @@
       "severity": "Error",
       "ignoreExceptions": true
     },
-    "global_class": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "identical_conditions": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "identical_contents": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "identical_descriptions": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "identical_form_names": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "if_in_if": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "implement_methods": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "global_class": true,
+    "identical_conditions": true,
+    "identical_contents": true,
+    "identical_descriptions": true,
+    "identical_form_names": true,
+    "if_in_if": true,
+    "implement_methods": true,
     "in_statement_indentation": {
       "exclude": [],
       "severity": "Error",
@@ -403,10 +308,7 @@
       "ignoreGlobalClassDefinition": false,
       "ignoreGlobalInterface": false
     },
-    "inline_data_old_versions": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "inline_data_old_versions": true,
     "intf_referencing_clas": {
       "exclude": [],
       "severity": "Error",
@@ -455,35 +357,14 @@
       "exception": "^LCX_.+$",
       "test": "^LTCL_.+$"
     },
-    "local_testclass_location": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "local_testclass_location": true,
     "local_variable_names": false,
-    "main_file_contents": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "many_parentheses": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "max_one_method_parameter_per_line": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "max_one_statement": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "message_exists": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "method_implemented_twice": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "main_file_contents": true,
+    "many_parentheses": true,
+    "max_one_method_parameter_per_line": true,
+    "max_one_statement": true,
+    "message_exists": true,
+    "method_implemented_twice": true,
     "method_length": {
       "exclude": [],
       "severity": "Error",
@@ -492,29 +373,17 @@
       "ignoreTestClasses": false,
       "checkForms": true
     },
-    "method_overwrites_builtin": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "method_overwrites_builtin": true,
     "method_parameter_names": false,
-    "mix_returning": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "mix_returning": true,
     "modify_only_own_db_tables": {
       "exclude": [],
       "severity": "Error",
       "reportDynamic": true,
       "ownTables": "^[yz]"
     },
-    "msag_consistency": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "names_no_dash": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "msag_consistency": true,
+    "names_no_dash": true,
     "nesting": {
       "exclude": [],
       "severity": "Error",
@@ -526,10 +395,7 @@
       "count": 3,
       "logic": "less"
     },
-    "no_chained_assignment": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "no_chained_assignment": true,
     "no_public_attributes": {
       "exclude": [],
       "severity": "Error",
@@ -593,50 +459,17 @@
       "callTransformation": true,
       "regex": true
     },
-    "omit_parameter_name": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "omit_receiving": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "parser_702_chaining": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "parser_error": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "parser_missing_space": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "pragma_placement": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "prefer_inline": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "prefer_is_not": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "prefer_raise_exception_new": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "prefer_returning_to_exporting": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "prefer_xsdbool": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "omit_parameter_name": true,
+    "omit_receiving": true,
+    "parser_702_chaining": true,
+    "parser_error": true,
+    "parser_missing_space": true,
+    "pragma_placement": true,
+    "prefer_inline": true,
+    "prefer_is_not": true,
+    "prefer_raise_exception_new": true,
+    "prefer_returning_to_exporting": true,
+    "prefer_xsdbool": true,
     "preferred_compare_operator": {
       "exclude": [],
       "severity": "Error",
@@ -655,28 +488,16 @@
       "severity": "Error",
       "omitMeInstanceCalls": true
     },
-    "reduce_string_templates": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "release_idoc": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "reduce_string_templates": true,
+    "release_idoc": true,
     "remove_descriptions": {
       "exclude": [],
       "severity": "Error",
       "ignoreExceptions": false,
       "ignoreWorkflow": true
     },
-    "rfc_error_handling": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "select_add_order_by": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "rfc_error_handling": true,
+    "select_add_order_by": true,
     "select_performance": false,
     "selection_screen_naming": {
       "exclude": [],
@@ -698,85 +519,34 @@
       "length": 1,
       "allow": []
     },
-    "sicf_consistency": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "space_before_colon": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "sicf_consistency": true,
+    "space_before_colon": true,
     "space_before_dot": {
       "exclude": [],
       "severity": "Error",
       "ignoreGlobalDefinition": true,
       "ignoreExceptions": true
     },
-    "sql_escape_host_variables": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "start_at_tab": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "static_call_via_instance": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "superclass_final": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "sy_modification": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "tabl_enhancement_category": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "try_without_catch": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "type_form_parameters": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "sql_escape_host_variables": true,
+    "start_at_tab": true,
+    "static_call_via_instance": true,
+    "superclass_final": true,
+    "sy_modification": true,
+    "tabl_enhancement_category": true,
+    "try_without_catch": true,
+    "type_form_parameters": true,
     "types_naming": {
       "exclude": [],
       "severity": "Error",
       "pattern": "^TY_.+$"
     },
-    "uncaught_exception": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unknown_types": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unnecessary_chaining": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unreachable_code": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unsecure_fae": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unused_ddic": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "unused_methods": {
-      "exclude": [],
-      "severity": "Error"
-    },
+    "uncaught_exception": true,
+    "unknown_types": true,
+    "unnecessary_chaining": true,
+    "unreachable_code": true,
+    "unsecure_fae": true,
+    "unused_ddic": true,
+    "unused_methods": true,
     "unused_types": {
       "exclude": [],
       "severity": "Error",
@@ -787,33 +557,12 @@
       "severity": "Error",
       "skipNames": []
     },
-    "use_bool_expression": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "use_class_based_exceptions": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "use_line_exists": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "use_new": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "when_others_last": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "whitespace_end": {
-      "exclude": [],
-      "severity": "Error"
-    },
-    "xml_consistency": {
-      "exclude": [],
-      "severity": "Error"
-    }
+    "use_bool_expression": true,
+    "use_class_based_exceptions": true,
+    "use_line_exists": true,
+    "use_new": true,
+    "when_others_last": true,
+    "whitespace_end": true,
+    "xml_consistency": true
   }
 }
