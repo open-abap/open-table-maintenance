@@ -9,7 +9,7 @@ CLASS zcl_otm_table_maintenance DEFINITION
         method TYPE string,
         path   TYPE string,
         body   TYPE xstring,
-      END OF ty_request .
+      END OF ty_request.
     TYPES:
       BEGIN OF ty_http,
         status       TYPE i,
