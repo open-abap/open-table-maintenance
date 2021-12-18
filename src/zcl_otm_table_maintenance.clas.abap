@@ -4,6 +4,7 @@ CLASS zcl_otm_table_maintenance DEFINITION
 
   PUBLIC SECTION.
 
+
     TYPES:
       BEGIN OF ty_request,
         method TYPE string,
