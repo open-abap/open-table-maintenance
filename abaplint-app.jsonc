@@ -3,7 +3,7 @@
     "default": {
       "filename": "./abaplint.jsonc"
     },
-    "onprem": {
+    "v740sp05": {
       "filename": "./abaplintonprem.jsonc"
     }
   }
