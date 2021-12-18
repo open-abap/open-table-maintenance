@@ -1,10 +1,10 @@
 {
   "configurations": {
     "default": {
-      "filename": "abaplint.jsonc"
+      "filename": "./abaplint.jsonc"
     },
     "onprem": {
-      "filename": "abaplintonprem.jsonc"
+      "filename": "./abaplintonprem.jsonc"
     }
   }
 }
