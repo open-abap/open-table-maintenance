@@ -131,7 +131,7 @@
       "deleteTextpool": true,
       "deleteDynpro": true,
       "importDynpro": true,
-      "dynamicSQL": true
+      "dynamicSQL": false
     },
     "db_operation_in_loop": true,
     "definitions_top": true,

@@ -1,0 +1,29 @@
+{
+  "name": "open-table-maintenance",
+  "private": true,
+  "version": "1.0.0",
+  "description": "open-table-maintenance",
+  "scripts": {
+    "lint": "abaplint",
+    "transpile": "rm -rf output && abap_transpile",
+    "unit": "npm run transpile && echo RUNNING && node output/index.mjs",
+    "test": "npm run lint && npm run unit",
+    "start": "npm run transpile && node test/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-abap/open-table-maintenance.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/open-abap/open-table-maintenance/issues"
+  },
+  "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
+  "dependencies": {
+    "@abaplint/cli": "^2.83.23",
+    "@abaplint/runtime": "^1.7.15",
+    "@abaplint/transpiler-cli": "^1.7.15",
+    "express": "^4.17.2"
+  }
+}

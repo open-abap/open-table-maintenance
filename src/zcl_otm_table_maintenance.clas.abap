@@ -59,7 +59,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -131,7 +131,10 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     DATA dref TYPE REF TO data.
     CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
     ASSIGN dref->* TO <fs>.
+    ASSERT sy-subrc = 0.
+
     SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs>.
+    ASSERT sy-subrc = 0.
 
     rv_json = to_json( dref ).
 
@@ -144,6 +147,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     DATA dref TYPE REF TO data.
     CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
     ASSIGN dref->* TO <fs>.
+    ASSERT sy-subrc = 0.
 
     CALL TRANSFORMATION id SOURCE XML iv_json RESULT data = <fs>.
 
@@ -179,6 +183,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     FIELD-SYMBOLS <fs> TYPE STANDARD TABLE.
     ASSIGN ref->* TO <fs>.
+    ASSERT sy-subrc = 0.
 
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id SOURCE data = <fs> RESULT XML writer.
