@@ -15,7 +15,7 @@ Single class, easy to copy
 ```abap
   METHOD if_http_extension~handle_request.
 
-    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZOPENTEST' )->serve( VALUE #(
       method = server->request->get_method( )
       path   = server->request->get_header_field( '~path' )
       body   = server->request->get_data( ) ) ).
@@ -34,7 +34,7 @@ Single class, easy to copy
 ```abap
   METHOD if_http_service_extension~handle_request.
 
-    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZOPENTEST' )->serve( VALUE #(
       method = request->get_method( )
       path   = request->get_header_field( '~path' )
       body   = request->get_binary( ) ) ).

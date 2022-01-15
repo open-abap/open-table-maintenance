@@ -7,7 +7,7 @@ CLASS zcl_http_handler IMPLEMENTATION.
 
   METHOD if_http_extension~handle_request.
 
-    DATA(result) = NEW zcl_otm_table_maintenance( 'ZDEMO_SOH' )->serve( VALUE #(
+    DATA(result) = NEW zcl_otm_table_maintenance( 'ZOPENTEST' )->serve( VALUE #(
       method = server->request->get_method( )
       path   = server->request->get_header_field( '~path' )
       body   = server->request->get_data( ) ) ).
