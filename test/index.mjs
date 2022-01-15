@@ -18,9 +18,9 @@ app.get('/', function (req, res) {
 
 // ------------------
 
-app.all("/abap", async function (req, res) {
+app.all(["/abap", "/abap*"], async function (req, res) {
   await cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
 });
 
 app.listen(PORT);
-console.log("Listening on port http://localhost:" + PORT);
+console.log("Listening on port http://localhost:" + PORT + "/abap");
