@@ -12,5 +12,5 @@ jobs:
         node-version: '16'
     - run: npm ci
     - run: npm start &
-    - run: node tests/puppeteer.js
+    - run: node test/puppeteer.js
     - run: ls
