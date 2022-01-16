@@ -4,12 +4,13 @@ CLASS zcl_otm_table_maintenance DEFINITION
 
   PUBLIC SECTION.
 
+
     TYPES:
       BEGIN OF ty_request,
         method TYPE string,
         path   TYPE string,
         body   TYPE xstring,
-      END OF ty_request .
+      END OF ty_request.
     TYPES:
       BEGIN OF ty_http,
         status       TYPE i,
@@ -58,7 +59,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -90,6 +91,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
+      '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = columnNames.map(n => {return {"title": n};});' && |\n| &&
@@ -130,7 +132,10 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     DATA dref TYPE REF TO data.
     CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
     ASSIGN dref->* TO <fs>.
-    SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs>.
+    ASSERT sy-subrc = 0.
+
+    " dont check SUBRC, the table might be empty
+    SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs> ##SUBRC_OK.
 
     rv_json = to_json( dref ).
 
@@ -143,6 +148,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     DATA dref TYPE REF TO data.
     CREATE DATA dref TYPE STANDARD TABLE OF (mv_table) WITH DEFAULT KEY.
     ASSIGN dref->* TO <fs>.
+    ASSERT sy-subrc = 0.
 
     CALL TRANSFORMATION id SOURCE XML iv_json RESULT data = <fs>.
 
@@ -178,6 +184,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     FIELD-SYMBOLS <fs> TYPE STANDARD TABLE.
     ASSIGN ref->* TO <fs>.
+    ASSERT sy-subrc = 0.
 
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id SOURCE data = <fs> RESULT XML writer.
