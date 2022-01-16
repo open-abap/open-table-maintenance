@@ -16,3 +16,7 @@ jobs:
     - run: sleep 30
     - run: node test/puppeteer.js
     - run: ls
+    - uses: actions/upload-artifact@v2
+      with:
+        name: screenshot
+        path: screenshot.png
