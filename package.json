@@ -25,6 +25,7 @@
     "@abaplint/cli": "^2.83.23",
     "@abaplint/runtime": "^1.7.20",
     "@abaplint/transpiler-cli": "^1.7.20",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "puppeteer": "^13.0.1"
   }
 }
