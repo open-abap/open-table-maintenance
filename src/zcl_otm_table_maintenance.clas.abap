@@ -91,6 +91,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
+      '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = columnNames.map(n => {return {"title": n};});' && |\n| &&
@@ -133,8 +134,8 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     ASSIGN dref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
-    SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs>.
-    ASSERT sy-subrc = 0.
+    " dont check SUBRC, the table might be empty
+    SELECT * FROM (mv_table) ORDER BY PRIMARY KEY INTO TABLE @<fs> ##SUBRC_OK.
 
     rv_json = to_json( dref ).
 
