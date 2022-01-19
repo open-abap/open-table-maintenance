@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -69,45 +69,6 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     mv_table = iv_table.
   ENDMETHOD.
 
-  METHOD list_key_fields.
-
-    CONSTANTS workaround TYPE string VALUE 'DDFIELDS'.
-    DATA obj TYPE REF TO object.
-    DATA lv_tabname TYPE c LENGTH 16.
-    DATA lr_ddfields TYPE REF TO data.
-    FIELD-SYMBOLS <any> TYPE any.
-    FIELD-SYMBOLS <fieldname> TYPE simple.
-    FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
-
-* fix type,
-    lv_tabname = mv_table.
-
-    TRY.
-        CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>('DATABASE_TABLE')
-          EXPORTING
-            iv_name           = lv_tabname
-          RECEIVING
-            ro_database_table = obj.
-        ASSIGN obj->('IF_XCO_DATABASE_TABLE~FIELDS->IF_XCO_DBT_FIELDS_FACTORY~KEY') TO <any>.
-        ASSERT sy-subrc = 0.
-        obj = <any>.
-        CALL METHOD obj->('IF_XCO_DBT_FIELDS~GET_NAMES')
-          RECEIVING
-            rt_names = names.
-      CATCH cx_sy_dyn_call_illegal_class.
-        CREATE DATA lr_ddfields TYPE (workaround).
-        ASSIGN lr_ddfields->* TO <ddfields>.
-        ASSERT sy-subrc = 0.
-        <ddfields> = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
-          lv_tabname ) )->get_ddic_field_list( ).
-        LOOP AT <ddfields> ASSIGNING <any> WHERE ('KEYFLAG = abap_true').
-          ASSIGN COMPONENT 'FIELDNAME' OF STRUCTURE <any> TO <fieldname>.
-          ASSERT sy-subrc = 0.
-          APPEND <fieldname> TO names.
-        ENDLOOP.
-    ENDTRY.
-
-  ENDMETHOD.
 
   METHOD from_xstring.
     string = cl_abap_conv_codepage=>create_in( )->convert( xstring ).
@@ -164,6 +125,47 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |<div id="content">loading</div><br>\n| &&
       |</body>\n| &&
       |</html>|.
+  ENDMETHOD.
+
+
+  METHOD list_key_fields.
+
+    CONSTANTS workaround TYPE string VALUE 'DDFIELDS'.
+    DATA obj TYPE REF TO object.
+    DATA lv_tabname TYPE c LENGTH 16.
+    DATA lr_ddfields TYPE REF TO data.
+    FIELD-SYMBOLS <any> TYPE any.
+    FIELD-SYMBOLS <fieldname> TYPE simple.
+    FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
+
+* fix type,
+    lv_tabname = mv_table.
+
+    TRY.
+        CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>('DATABASE_TABLE')
+          EXPORTING
+            iv_name           = lv_tabname
+          RECEIVING
+            ro_database_table = obj.
+        ASSIGN obj->('IF_XCO_DATABASE_TABLE~FIELDS->IF_XCO_DBT_FIELDS_FACTORY~KEY') TO <any>.
+        ASSERT sy-subrc = 0.
+        obj = <any>.
+        CALL METHOD obj->('IF_XCO_DBT_FIELDS~GET_NAMES')
+          RECEIVING
+            rt_names = names.
+      CATCH cx_sy_dyn_call_illegal_class.
+        CREATE DATA lr_ddfields TYPE (workaround).
+        ASSIGN lr_ddfields->* TO <ddfields>.
+        ASSERT sy-subrc = 0.
+        <ddfields> = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
+          lv_tabname ) )->get_ddic_field_list( ).
+        LOOP AT <ddfields> ASSIGNING <any> WHERE ('KEYFLAG = abap_true').
+          ASSIGN COMPONENT 'FIELDNAME' OF STRUCTURE <any> TO <fieldname>.
+          ASSERT sy-subrc = 0.
+          APPEND <fieldname> TO names.
+        ENDLOOP.
+    ENDTRY.
+
   ENDMETHOD.
 
 
@@ -227,11 +229,12 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     ASSIGN ref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
+    DATA(fields) = list_key_fields( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id
       SOURCE
-        data = <fs>
-        fields = list_key_fields( )
+        data   = <fs>
+        fields = fields
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 
