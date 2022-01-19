@@ -78,6 +78,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     FIELD-SYMBOLS <fieldname> TYPE simple.
     FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
     DATA names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
+
     TRY.
         CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>('DATABASE_TABLE')
           EXPORTING
