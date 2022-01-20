@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -142,7 +142,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     lv_tabname = mv_table.
 
     TRY.
-        CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>('DATABASE_TABLE')
+        CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>database_table
           EXPORTING
             iv_name           = lv_tabname
           RECEIVING
