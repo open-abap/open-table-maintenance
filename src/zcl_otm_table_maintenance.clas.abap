@@ -55,6 +55,8 @@ CLASS zcl_otm_table_maintenance DEFINITION
         !string        TYPE string
       RETURNING
         VALUE(xstring) TYPE xstring .
+    TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
+    METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
 ENDCLASS.
 
 
@@ -91,10 +93,13 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
+      '    const keyFields = JSON.parse(Http.responseText).KEYFIELDS;' && |\n| &&
       '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
-      '    let columnSettings = columnNames.map(n => {return {"title": n};});' && |\n| &&
+      '    let columnSettings = columnNames.map(n => {return {' && |\n| &&
+      '       "title": n,' && |\n| &&
+      '       "readOnly": keyFields.some(a => (a === n))};});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
@@ -123,6 +128,51 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |<div id="content">loading</div><br>\n| &&
       |</body>\n| &&
       |</html>|.
+  ENDMETHOD.
+
+
+  METHOD list_key_fields.
+
+    CONSTANTS workaround TYPE string VALUE 'DDFIELDS'.
+    DATA obj TYPE REF TO object.
+    DATA lv_tabname TYPE c LENGTH 16.
+    DATA lr_ddfields TYPE REF TO data.
+    FIELD-SYMBOLS <any> TYPE any.
+    FIELD-SYMBOLS <field> TYPE simple.
+    FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
+
+* fix type,
+    lv_tabname = mv_table.
+
+    TRY.
+        CALL METHOD ('XCO_CP_ABAP_DICTIONARY')=>database_table
+          EXPORTING
+            iv_name           = lv_tabname
+          RECEIVING
+            ro_database_table = obj.
+        ASSIGN obj->('IF_XCO_DATABASE_TABLE~FIELDS->IF_XCO_DBT_FIELDS_FACTORY~KEY') TO <any>.
+        ASSERT sy-subrc = 0.
+        obj = <any>.
+        CALL METHOD obj->('IF_XCO_DBT_FIELDS~GET_NAMES')
+          RECEIVING
+            rt_names = names.
+      CATCH cx_sy_dyn_call_illegal_class.
+        CREATE DATA lr_ddfields TYPE (workaround).
+        ASSIGN lr_ddfields->* TO <ddfields>.
+        ASSERT sy-subrc = 0.
+        <ddfields> = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
+          lv_tabname ) )->get_ddic_field_list( ).
+        LOOP AT <ddfields> ASSIGNING <any>.
+          ASSIGN COMPONENT 'KEYFLAG' OF STRUCTURE <any> TO <field>.
+          IF sy-subrc <> 0 OR <field> <> abap_true.
+            CONTINUE.
+          ENDIF.
+          ASSIGN COMPONENT 'FIELDNAME' OF STRUCTURE <any> TO <field>.
+          ASSERT sy-subrc = 0.
+          APPEND <field> TO names.
+        ENDLOOP.
+    ENDTRY.
+
   ENDMETHOD.
 
 
@@ -186,8 +236,13 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     ASSIGN ref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
+    DATA(keyfields) = list_key_fields( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
-    CALL TRANSFORMATION id SOURCE data = <fs> RESULT XML writer.
+    CALL TRANSFORMATION id
+      SOURCE
+        data      = <fs>
+        keyfields = keyfields
+      RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 
   ENDMETHOD.
