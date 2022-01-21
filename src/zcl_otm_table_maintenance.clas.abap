@@ -135,7 +135,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     DATA lv_tabname TYPE c LENGTH 16.
     DATA lr_ddfields TYPE REF TO data.
     FIELD-SYMBOLS <any> TYPE any.
-    FIELD-SYMBOLS <fieldname> TYPE simple.
+    FIELD-SYMBOLS <field> TYPE simple.
     FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
 
 * fix type,
@@ -159,10 +159,14 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
         ASSERT sy-subrc = 0.
         <ddfields> = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
           lv_tabname ) )->get_ddic_field_list( ).
-        LOOP AT <ddfields> ASSIGNING <any> WHERE ('KEYFLAG = abap_true').
-          ASSIGN COMPONENT 'FIELDNAME' OF STRUCTURE <any> TO <fieldname>.
+        LOOP AT <ddfields> ASSIGNING <any>.
+          ASSIGN COMPONENT 'KEYFLAG' OF STRUCTURE <any> TO <field>.
+          IF sy-subrc <> 0 OR <field> <> abap_true.
+            CONTINUE.
+          ENDIF.
+          ASSIGN COMPONENT 'FIELDNAME' OF STRUCTURE <any> TO <field>.
           ASSERT sy-subrc = 0.
-          APPEND <fieldname> TO names.
+          APPEND <field> TO names.
         ENDLOOP.
     ENDTRY.
 
