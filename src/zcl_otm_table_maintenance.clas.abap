@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -233,12 +233,12 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     ASSIGN ref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
-    DATA(fields) = list_key_fields( ).
+    DATA(keyfields) = list_key_fields( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id
       SOURCE
-        data   = <fs>
-        fields = fields
+        data      = <fs>
+        keyfields = keyfields
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 
