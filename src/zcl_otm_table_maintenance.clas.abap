@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -93,10 +93,13 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
+      '    const keyFields = JSON.parse(Http.responseText).KEYFIELDS;' && |\n| &&
       '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
-      '    let columnSettings = columnNames.map(n => {return {"title": n};});' && |\n| &&
+      '    let columnSettings = columnNames.map(n => {return {' && |\n| &&
+      '       "title": n,' && |\n| &&
+      '       "readOnly": keyFields.some(a => (a === n))};});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
