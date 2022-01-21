@@ -6,9 +6,7 @@ Works with:
 * [Embedded Steampunk](https://blogs.sap.com/2021/09/30/steampunk-is-going-all-in/)
 * On-Premise v740sp08 and up
 
-Install with [abapGit](https://abapgit.org)
-
-Single class, easy to copy
+Install with [abapGit](https://abapgit.org), or copy paste into a system
 
 ## Use-case: On-prem shim
 
