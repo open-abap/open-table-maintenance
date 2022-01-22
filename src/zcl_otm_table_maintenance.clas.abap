@@ -85,7 +85,17 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
           RECEIVING
             result = string.
       CATCH cx_sy_dyn_call_illegal_class.
-* todo
+        CALL METHOD ('CL_ABAP_CONV_IN_CE')=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = conv.
+
+        CALL METHOD conv->('CONVERT')
+          EXPORTING
+            input = xstring
+          IMPORTING
+            data  = string.
     ENDTRY.
 
   ENDMETHOD.
@@ -279,7 +289,17 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
           RECEIVING
             result = xstring.
       CATCH cx_sy_dyn_call_illegal_class.
-* todo
+        CALL METHOD ('CL_ABAP_CONV_OUT_CE')=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = conv.
+
+        CALL METHOD conv->('CONVERT')
+          EXPORTING
+            data   = string
+          IMPORTING
+            buffer = xstring.
     ENDTRY.
 
   ENDMETHOD.
