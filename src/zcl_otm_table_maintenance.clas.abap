@@ -74,15 +74,19 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     DATA conv TYPE REF TO object.
 
-    CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_in
-      RECEIVING
-        instance = conv.
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_in
+          RECEIVING
+            instance = conv.
 
-    CALL METHOD conv->('IF_ABAP_CONV_IN~CONVERT')
-      EXPORTING
-        source = xstring
-      RECEIVING
-        result = string.
+        CALL METHOD conv->('IF_ABAP_CONV_IN~CONVERT')
+          EXPORTING
+            source = xstring
+          RECEIVING
+            result = string.
+      CATCH cx_sy_dyn_call_illegal_class.
+* todo
+    ENDTRY.
 
   ENDMETHOD.
 
@@ -264,15 +268,19 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     DATA conv TYPE REF TO object.
 
-    CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
-      RECEIVING
-        instance = conv.
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
+          RECEIVING
+            instance = conv.
 
-    CALL METHOD conv->('IF_ABAP_CONV_OUT~CONVERT')
-      EXPORTING
-        source = string
-      RECEIVING
-        result = xstring.
+        CALL METHOD conv->('IF_ABAP_CONV_OUT~CONVERT')
+          EXPORTING
+            source = string
+          RECEIVING
+            result = xstring.
+      CATCH cx_sy_dyn_call_illegal_class.
+* todo
+    ENDTRY.
 
   ENDMETHOD.
 ENDCLASS.
