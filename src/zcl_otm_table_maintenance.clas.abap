@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -71,7 +71,19 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD from_xstring.
-    string = cl_abap_conv_codepage=>create_in( )->convert( xstring ).
+
+    DATA conv TYPE REF TO object.
+
+    CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_in
+      RECEIVING
+        instance = conv.
+
+    CALL METHOD conv->('IF_ABAP_CONV_IN~CONVERT')
+      EXPORTING
+        source = xstring
+      RECEIVING
+        result = string.
+
   ENDMETHOD.
 
 
@@ -249,6 +261,18 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD to_xstring.
-    xstring = cl_abap_conv_codepage=>create_out( )->convert( string ).
+
+    DATA conv TYPE REF TO object.
+
+    CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
+      RECEIVING
+        instance = conv.
+
+    CALL METHOD conv->('IF_ABAP_CONV_OUT~CONVERT')
+      EXPORTING
+        source = string
+      RECEIVING
+        result = xstring.
+
   ENDMETHOD.
 ENDCLASS.
