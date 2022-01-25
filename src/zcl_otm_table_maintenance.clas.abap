@@ -158,8 +158,6 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD list_key_fields.
-
-    CONSTANTS workaround TYPE string VALUE 'DDFIELDS'.
     DATA obj TYPE REF TO object.
     DATA lv_tabname TYPE c LENGTH 16.
     DATA lr_ddfields TYPE REF TO data.
@@ -183,6 +181,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
           RECEIVING
             rt_names = names.
       CATCH cx_sy_dyn_call_illegal_class.
+        DATA(workaround) = 'DDFIELDS'.
         CREATE DATA lr_ddfields TYPE (workaround).
         ASSIGN lr_ddfields->* TO <ddfields>.
         ASSERT sy-subrc = 0.
