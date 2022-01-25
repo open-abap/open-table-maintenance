@@ -61,7 +61,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -71,7 +71,33 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD from_xstring.
-    string = cl_abap_conv_codepage=>create_in( )->convert( xstring ).
+
+    DATA conv TYPE REF TO object.
+
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_in
+          RECEIVING
+            instance = conv.
+
+        CALL METHOD conv->('IF_ABAP_CONV_IN~CONVERT')
+          EXPORTING
+            source = xstring
+          RECEIVING
+            result = string.
+      CATCH cx_sy_dyn_call_illegal_class.
+        CALL METHOD ('CL_ABAP_CONV_IN_CE')=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = conv.
+
+        CALL METHOD conv->('CONVERT')
+          EXPORTING
+            input = xstring
+          IMPORTING
+            data  = string.
+    ENDTRY.
+
   ENDMETHOD.
 
 
@@ -248,6 +274,32 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD to_xstring.
-    xstring = cl_abap_conv_codepage=>create_out( )->convert( string ).
+
+    DATA conv TYPE REF TO object.
+
+    TRY.
+        CALL METHOD ('CL_ABAP_CONV_CODEPAGE')=>create_out
+          RECEIVING
+            instance = conv.
+
+        CALL METHOD conv->('IF_ABAP_CONV_OUT~CONVERT')
+          EXPORTING
+            source = string
+          RECEIVING
+            result = xstring.
+      CATCH cx_sy_dyn_call_illegal_class.
+        CALL METHOD ('CL_ABAP_CONV_OUT_CE')=>create
+          EXPORTING
+            encoding = 'UTF-8'
+          RECEIVING
+            conv     = conv.
+
+        CALL METHOD conv->('CONVERT')
+          EXPORTING
+            data   = string
+          IMPORTING
+            buffer = xstring.
+    ENDTRY.
+
   ENDMETHOD.
 ENDCLASS.
