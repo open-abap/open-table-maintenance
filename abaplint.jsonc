@@ -379,7 +379,7 @@
     "modify_only_own_db_tables": {
       "exclude": [],
       "severity": "Error",
-      "reportDynamic": true,
+      "reportDynamic": false,
       "ownTables": "^[yz]"
     },
     "msag_consistency": true,
