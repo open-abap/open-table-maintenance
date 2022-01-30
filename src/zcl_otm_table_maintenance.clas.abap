@@ -127,14 +127,14 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.open("GET", url);' && |\n| &&
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
-      '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
-      '    const keyFields = JSON.parse(Http.responseText).KEYFIELDS;' && |\n| &&
+      '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
+      '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
-      '    let columnSettings = columnNames.map(n => {return {' && |\n| &&
-      '       "title": n,' && |\n| &&
-      '       "readOnly": keyFields.some(a => (a === n))};});' && |\n| &&
+      '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
+      '       "title": n.NAME,' && |\n| &&
+      '       "readOnly": n.KEY === "X"};});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
@@ -288,13 +288,11 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     ASSIGN ref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
-    DATA(keyfields) = list_key_fields( ).
     DATA(meta) = build_metadata( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id
       SOURCE
         data      = <fs>
-        keyfields = keyfields
         meta      = meta
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
