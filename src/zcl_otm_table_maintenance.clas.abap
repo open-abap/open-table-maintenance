@@ -61,6 +61,7 @@ CLASS zcl_otm_table_maintenance DEFINITION
              name      TYPE abap_compname,
              key       TYPE abap_bool,
              type_kind TYPE abap_typekind,
+             length    TYPE i,
            END OF ty_fielddata.
     TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
     METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
@@ -177,6 +178,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
         name      = ls_component-name
         key       = lv_key
         type_kind = ls_component-type->type_kind
+        length    = ls_component-type->length
         ) TO rt_metadata.
     ENDLOOP.
 
@@ -190,7 +192,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     FIELD-SYMBOLS <field> TYPE simple.
     FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
 
-* fix type,
+* convert to correct type,
     lv_tabname = mv_table.
 
     TRY.
