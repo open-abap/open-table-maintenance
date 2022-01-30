@@ -134,8 +134,12 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
       '       "title": n.NAME,' && |\n| &&
+      '       "width": n.LENGTH * 20,' && |\n| &&
       '       "readOnly": n.KEY === "X"};});' && |\n| &&
-      '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
+      '    jtable = jspreadsheet(document.getElementById("content"), {' && |\n| &&
+      '       defaultColAlign:"left",' && |\n| &&
+      '       data: data,' && |\n| &&
+      '       columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
       'function toObject(row) {' && |\n| &&
