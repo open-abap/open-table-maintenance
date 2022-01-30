@@ -58,8 +58,9 @@ CLASS zcl_otm_table_maintenance DEFINITION
     TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
     METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
     TYPES: BEGIN OF ty_fielddata,
-             name TYPE abap_compname,
-             key TYPE abap_bool,
+             name      TYPE abap_compname,
+             key       TYPE abap_bool,
+             type_kind TYPE abap_typekind,
            END OF ty_fielddata.
     TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
     METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
@@ -173,8 +174,9 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
       lv_key = boolc( sy-subrc = 0 ).
       APPEND VALUE #(
-        name = ls_component-name
-        key  = lv_key
+        name      = ls_component-name
+        key       = lv_key
+        type_kind = ls_component-type->type_kind
         ) TO rt_metadata.
     ENDLOOP.
 
