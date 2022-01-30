@@ -133,13 +133,20 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
-      '       "title": n.NAME,' && |\n| &&
-      '       "width": n.LENGTH * 20,' && |\n| &&
-      '       "readOnly": n.KEY === "X"};});' && |\n| &&
+      '      "title": n.NAME,' && |\n| &&
+      '      "width": n.LENGTH * 20' && |\n| &&
+      '    };});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {' && |\n| &&
-      '       defaultColAlign:"left",' && |\n| &&
-      '       data: data,' && |\n| &&
-      '       columns: columnSettings});' && |\n| &&
+      '      defaultColAlign:"left",' && |\n| &&
+      '      allowInsertRow:true,' && |\n| &&
+      '      allowManualInsertRow:true,' && |\n| &&
+      '      allowInsertColumn:false,' && |\n| &&
+      '      allowManualInsertColumn:false,' && |\n| &&
+      '      allowDeleteRow:true,' && |\n| &&
+      '      allowRenameColumn:false,' && |\n| &&
+      '      allowDeleteColumn:false,' && |\n| &&
+      '      data: data,' && |\n| &&
+      '      columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
       'function toObject(row) {' && |\n| &&
