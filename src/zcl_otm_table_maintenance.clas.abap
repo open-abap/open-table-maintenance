@@ -57,11 +57,17 @@ CLASS zcl_otm_table_maintenance DEFINITION
         VALUE(xstring) TYPE xstring .
     TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
     METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
+    TYPES: BEGIN OF ty_fielddata,
+             name TYPE abap_compname,
+             key TYPE abap_bool,
+           END OF ty_fielddata.
+    TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
+    METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
 ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -157,6 +163,22 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       |</html>|.
   ENDMETHOD.
 
+  METHOD build_metadata.
+    DATA lv_key TYPE abap_bool.
+    DATA(lt_key_fields) = list_key_fields( ).
+    DATA(lt_components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
+      mv_table ) )->get_components( ).
+
+    LOOP AT lt_components INTO DATA(ls_component).
+      READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
+      lv_key = xsdbool( sy-subrc = 0 ).
+      APPEND VALUE #(
+        name = ls_component-name
+        key  = lv_key
+        ) TO rt_metadata.
+    ENDLOOP.
+
+  ENDMETHOD.
 
   METHOD list_key_fields.
     DATA obj TYPE REF TO object.
@@ -263,11 +285,13 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     ASSERT sy-subrc = 0.
 
     DATA(keyfields) = list_key_fields( ).
+    DATA(meta) = build_metadata( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id
       SOURCE
         data      = <fs>
         keyfields = keyfields
+        meta      = meta
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 
