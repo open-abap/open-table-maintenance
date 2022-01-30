@@ -171,7 +171,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
     LOOP AT lt_components INTO DATA(ls_component).
       READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
-      lv_key = xsdbool( sy-subrc = 0 ).
+      lv_key = boolc( sy-subrc = 0 ).
       APPEND VALUE #(
         name = ls_component-name
         key  = lv_key
