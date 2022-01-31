@@ -23,8 +23,8 @@
   "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
   "dependencies": {
     "@abaplint/cli": "^2.85.0",
-    "@abaplint/runtime": "^1.7.35",
-    "@abaplint/transpiler-cli": "^1.7.35",
+    "@abaplint/runtime": "^1.7.36",
+    "@abaplint/transpiler-cli": "^1.7.36",
     "express": "^4.17.2",
     "puppeteer": "^13.1.2"
   }
