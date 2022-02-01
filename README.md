@@ -4,11 +4,12 @@ Works with:
 * [open-abap](https://github.com/open-abap/open-abap)
 * [Steampunk](https://blogs.sap.com/2019/08/20/its-steampunk-now/)
 * [Embedded Steampunk](https://blogs.sap.com/2021/09/30/steampunk-is-going-all-in/)
-* On-Premise v740sp08 and up
+* On-Premise v740sp05 and up
+* (Code is automatically downported on build, so it should also work with 702)
 
 Install with [abapGit](https://abapgit.org), or copy paste into a system
 
-Warning: only hardcode the table name, dont use with important tables, use at own risk!
+Warning: only hardcode the table name, don't use with important tables, use at own risk!
 
 ## Use-case: On-prem shim
 
