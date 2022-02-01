@@ -57,11 +57,19 @@ CLASS zcl_otm_table_maintenance DEFINITION
         VALUE(xstring) TYPE xstring .
     TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
     METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
+    TYPES: BEGIN OF ty_fielddata,
+             name      TYPE abap_compname,
+             key       TYPE abap_bool,
+             type_kind TYPE abap_typekind,
+             length    TYPE i,
+           END OF ty_fielddata.
+    TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
+    METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
 ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -119,15 +127,26 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '  Http.open("GET", url);' && |\n| &&
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
-      '    const data = JSON.parse(Http.responseText).DATA;' && |\n| &&
-      '    const keyFields = JSON.parse(Http.responseText).KEYFIELDS;' && |\n| &&
+      '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
+      '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
       '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
-      '    let columnSettings = columnNames.map(n => {return {' && |\n| &&
-      '       "title": n,' && |\n| &&
-      '       "readOnly": keyFields.some(a => (a === n))};});' && |\n| &&
-      '    jtable = jspreadsheet(document.getElementById("content"), {data: data, columns: columnSettings});' && |\n| &&
+      '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
+      '      "title": n.NAME,' && |\n| &&
+      '      "width": n.LENGTH * 20' && |\n| &&
+      '    };});' && |\n| &&
+      '    jtable = jspreadsheet(document.getElementById("content"), {' && |\n| &&
+      '      defaultColAlign:"left",' && |\n| &&
+      '      allowInsertRow:true,' && |\n| &&
+      '      allowManualInsertRow:true,' && |\n| &&
+      '      allowInsertColumn:false,' && |\n| &&
+      '      allowManualInsertColumn:false,' && |\n| &&
+      '      allowDeleteRow:true,' && |\n| &&
+      '      allowRenameColumn:false,' && |\n| &&
+      '      allowDeleteColumn:false,' && |\n| &&
+      '      data: data,' && |\n| &&
+      '      columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
       'function toObject(row) {' && |\n| &&
@@ -157,6 +176,24 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       |</html>|.
   ENDMETHOD.
 
+  METHOD build_metadata.
+    DATA lv_key TYPE abap_bool.
+    DATA(lt_key_fields) = list_key_fields( ).
+    DATA(lt_components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
+      mv_table ) )->get_components( ).
+
+    LOOP AT lt_components INTO DATA(ls_component).
+      READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
+      lv_key = boolc( sy-subrc = 0 ).
+      APPEND VALUE #(
+        name      = ls_component-name
+        key       = lv_key
+        type_kind = ls_component-type->type_kind
+        length    = ls_component-type->length
+        ) TO rt_metadata.
+    ENDLOOP.
+
+  ENDMETHOD.
 
   METHOD list_key_fields.
     DATA obj TYPE REF TO object.
@@ -166,7 +203,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     FIELD-SYMBOLS <field> TYPE simple.
     FIELD-SYMBOLS <ddfields> TYPE ANY TABLE.
 
-* fix type,
+* convert to correct type,
     lv_tabname = mv_table.
 
     TRY.
@@ -228,7 +265,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
     CALL TRANSFORMATION id SOURCE XML iv_json RESULT data = <fs>.
 
-* todo
+    MODIFY (mv_table) FROM TABLE @<fs> ##SUBRC_OK.
 
   ENDMETHOD.
 
@@ -262,12 +299,12 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
     ASSIGN ref->* TO <fs>.
     ASSERT sy-subrc = 0.
 
-    DATA(keyfields) = list_key_fields( ).
+    DATA(meta) = build_metadata( ).
     DATA(writer) = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
     CALL TRANSFORMATION id
       SOURCE
         data      = <fs>
-        keyfields = keyfields
+        meta      = meta
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 

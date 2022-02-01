@@ -379,7 +379,7 @@
     "modify_only_own_db_tables": {
       "exclude": [],
       "severity": "Error",
-      "reportDynamic": true,
+      "reportDynamic": false,
       "ownTables": "^[yz]"
     },
     "msag_consistency": true,
@@ -469,7 +469,7 @@
     "prefer_is_not": true,
     "prefer_raise_exception_new": true,
     "prefer_returning_to_exporting": true,
-    "prefer_xsdbool": true,
+    "prefer_xsdbool": false, // no, xsdbool introduced in 740sp08
     "preferred_compare_operator": {
       "exclude": [],
       "severity": "Error",
@@ -559,7 +559,7 @@
     },
     "use_bool_expression": true,
     "use_class_based_exceptions": true,
-    "use_line_exists": true,
+    "use_line_exists": false, // downport missing some scenarios
     "use_new": true,
     "when_others_last": true,
     "whitespace_end": true,
