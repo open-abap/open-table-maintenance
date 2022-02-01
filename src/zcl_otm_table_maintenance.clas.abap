@@ -265,8 +265,6 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
     CALL TRANSFORMATION id SOURCE XML iv_json RESULT data = <fs>.
 
-* todo
-    ASSERT sy-uname = 'USERNAME'.
     MODIFY (mv_table) FROM TABLE @<fs> ##SUBRC_OK.
 
   ENDMETHOD.
