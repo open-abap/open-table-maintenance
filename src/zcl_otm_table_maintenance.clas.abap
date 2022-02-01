@@ -114,6 +114,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     rv_html = |<!DOCTYPE html>\n| &&
       |<html>\n| &&
       |<head>\n| &&
+      |<title>open-table-maintenance</title>\n| &&
       |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>\n| &&
       |<script src="https://jsuites.net/v4/jsuites.js"></script>\n| &&
       |<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />\n| &&
