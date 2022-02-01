@@ -114,13 +114,13 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
     rv_html = |<!DOCTYPE html>\n| &&
       |<html>\n| &&
       |<head>\n| &&
+      |<title>open-table-maintenance</title>\n| &&
       |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>\n| &&
       |<script src="https://jsuites.net/v4/jsuites.js"></script>\n| &&
       |<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />\n| &&
       |<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />\n| &&
       |<script>\n| &&
       'let jtable;' && |\n| &&
-      'let columnNames;' && |\n| &&
       'const url = window.location.pathname + "/rest";' && |\n| &&
       'function run() {' && |\n| &&
       '  const Http = new XMLHttpRequest();' && |\n| &&
@@ -130,7 +130,6 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
       '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
-      '    columnNames = Object.keys(data[0]);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
       '      "title": n.NAME,' && |\n| &&
@@ -146,6 +145,12 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '      allowRenameColumn:false,' && |\n| &&
       '      allowDeleteColumn:false,' && |\n| &&
       '      data: data,' && |\n| &&
+      '      onload: function(instance) {' && |\n| &&
+      '        const keyCount = parsed.META.filter(n => n.KEY === "X").length;' && |\n| &&
+      '        for (let i = 0; i < keyCount; i++) {' && |\n| &&
+      '          instance.jexcel.colgroup[i].style.backgroundColor="#F8F8F8";' && |\n| &&
+      '        }' && |\n| &&
+      '      },' && |\n| &&
       '      columns: columnSettings});' && |\n| &&
       '  }' && |\n| &&
       '}' && |\n| &&
