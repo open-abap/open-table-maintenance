@@ -8,6 +8,8 @@ Works with:
 
 Install with [abapGit](https://abapgit.org), or copy paste into a system
 
+Warning: only hardcode the table name, dont use with important tables, use at own risk!
+
 ## Use-case: On-prem shim
 
 ```abap
