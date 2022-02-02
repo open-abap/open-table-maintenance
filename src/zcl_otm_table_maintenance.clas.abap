@@ -122,6 +122,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />\n| &&
       |<script>\n| &&
       'let jtable;' && |\n| &&
+      'let columnNames;' && |\n| &&
       'const url = window.location.pathname + "/rest";' && |\n| &&
       'function run() {' && |\n| &&
       '  const Http = new XMLHttpRequest();' && |\n| &&
@@ -130,7 +131,12 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
       '    const data = parsed.DATA;' && |\n| &&
-      '    if (data.length === 0) { document.getElementById("content").innerHTML = "empty"; return; }' && |\n| &&
+      '    if (data.length === 0) { ' && |\n| &&
+      '       const obj = {};' && |\n| &&
+      '       obj[parsed.META[0]["NAME"]] = "_";' && |\n| &&
+      '       data.push(obj);' && |\n| &&
+      '    }' && |\n| &&
+      '    columnNames = parsed.META.map(n => n.NAME);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
       '      "title": n.NAME,' && |\n| &&
@@ -164,7 +170,6 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '}' && |\n| &&
       'function save() {' && |\n| &&
       '  const body = {"DATA": jtable.getData().map(toObject)};' && |\n| &&
-      '  console.dir(body);' && |\n| &&
       '  const Http = new XMLHttpRequest();' && |\n| &&
       '  Http.open("POST", url);' && |\n| &&
       '  Http.send(JSON.stringify(body));' && |\n| &&
