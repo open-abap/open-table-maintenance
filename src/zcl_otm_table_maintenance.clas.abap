@@ -131,7 +131,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
       '    document.getElementById("tablename").innerHTML = ' && |\n| &&
-      '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1><tt>" + ' && |\n| &&
+      '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
       '       parsed.SY.SYSID + "-" + parsed.SY.MANDT + "</tt>";' && |\n| &&
       '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { ' && |\n| &&
@@ -143,7 +143,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
       '      "title": n.NAME,' && |\n| &&
-      '      "width": n.LENGTH * 20' && |\n| &&
+      '      "width": Math.min(200, n.LENGTH * 20)' && |\n| &&
       '    };});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {' && |\n| &&
       '      defaultColAlign:"left",' && |\n| &&
