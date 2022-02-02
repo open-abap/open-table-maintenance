@@ -130,6 +130,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '  Http.send();' && |\n| &&
       '  Http.onloadend = (e) => {' && |\n| &&
       '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
+      '    document.getElementById("tablename").innerHTML = parsed.TABLENAME;' && |\n| &&
       '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { ' && |\n| &&
       '       const obj = {};' && |\n| &&
@@ -180,7 +181,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |</script>\n| &&
       |</head>\n| &&
       |<body onload="run()">\n| &&
-      |<h1>open-table-maintenance</h1>\n| &&
+      |<h1><div id="tablename">open-table-maintenance</div></h1>\n| &&
       |<button type="button" onclick="save()">Save</button><br>\n| &&
       |<div id="content">loading</div><br>\n| &&
       |</body>\n| &&
@@ -316,6 +317,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       SOURCE
         data      = <fs>
         meta      = meta
+        tablename = mv_table
       RESULT XML writer.
     rv_json = from_xstring( writer->get_output( ) ).
 
