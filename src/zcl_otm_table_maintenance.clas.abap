@@ -3,7 +3,8 @@ CLASS zcl_otm_table_maintenance DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-
+* MIT License, Copyright (c) 2021 open-abap
+* https://github.com/open-abap/open-table-maintenance
 
     TYPES:
       BEGIN OF ty_request,
