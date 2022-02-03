@@ -21,4 +21,4 @@ jobs:
         name: downport702
         path: |
           src/*
-          abapgit.xml
+          .abapgit.xml
