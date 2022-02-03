@@ -3,7 +3,7 @@ name: CI
 on: [pull_request]
 
 jobs:
-  screenshot:
+  playwright:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -14,7 +14,8 @@ jobs:
     - run: npm ci
     - run: npm start &
     - run: sleep 30
-    - run: node test/puppeteer.js
+    - run: npx playwright install
+    - run: npm run playwright
     - run: ls
     - uses: actions/upload-artifact@v2
       with:
