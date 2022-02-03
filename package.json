@@ -9,6 +9,7 @@
     "unit": "npm run transpile && echo RUNNING && node output/index.mjs",
     "test": "npm run lint && npm run downport && npm run unit",
     "downport": "rm -rf downport && cp -r src downport && cp test/*.abap downport && cp test/*.xml downport && abaplint --fix abaplint-downport.jsonc",
+    "playwright": "npx playwright install chrome && npx playwright test",
     "start": "npm run lint && npm run downport && npm run transpile && node test/index.mjs"
   },
   "repository": {
@@ -24,8 +25,8 @@
   "dependencies": {
     "@abaplint/cli": "^2.85.9",
     "@abaplint/runtime": "^1.7.38",
+    "@playwright/test": "^1.18.1",
     "@abaplint/transpiler-cli": "^1.7.38",
-    "express": "^4.17.2",
-    "puppeteer": "^13.1.3"
+    "express": "^4.17.2"
   }
 }
