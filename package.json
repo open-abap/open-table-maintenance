@@ -9,7 +9,7 @@
     "unit": "npm run transpile && echo RUNNING && node output/index.mjs",
     "test": "npm run lint && npm run downport && npm run unit",
     "downport": "rm -rf downport && cp -r src downport && cp test/*.abap downport && cp test/*.xml downport && abaplint --fix abaplint-downport.jsonc",
-    "playwright": "npx playwright install chrome && npx playwright test",
+    "playwright": "npx playwright test",
     "start": "npm run lint && npm run downport && npm run transpile && node test/index.mjs"
   },
   "repository": {
