@@ -30,6 +30,7 @@ Warning: only hardcode the table name, don't use with important tables, use at o
   ENDMETHOD.
 ```
 
+
 ## Use-case: Steampunk shim
 
 ```abap
