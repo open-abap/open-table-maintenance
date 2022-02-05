@@ -10,7 +10,11 @@
     "test": "npm run lint && npm run downport && npm run unit",
     "downport": "rm -rf downport && cp -r src downport && cp test/*.abap downport && cp test/*.xml downport && abaplint --fix abaplint-downport.jsonc",
     "playwright": "npx playwright test",
-    "start": "npm run lint && npm run downport && npm run transpile && node test/index.mjs"
+    "start": "node start.mjs",
+    "start-local": "npm run lint && npm run downport && npm run transpile && node test/index.mjs",
+    "cf:build": "mbt build",
+    "cf:deploy": "cf deploy mta_archives/open-table-maintenance_0.0.1.mtar",
+    "cf:undeploy": "cf undeploy open-table-maintenance"
   },
   "repository": {
     "type": "git",
@@ -23,10 +27,12 @@
   },
   "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
   "dependencies": {
-    "@abaplint/cli": "^2.85.9",
     "@abaplint/runtime": "^1.7.38",
-    "@playwright/test": "^1.18.1",
-    "@abaplint/transpiler-cli": "^1.7.38",
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "@abaplint/cli": "^2.85.9",
+    "@playwright/test": "^1.18.1",
+    "@abaplint/transpiler-cli": "^1.7.38"
   }
 }
