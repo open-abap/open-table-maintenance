@@ -12,8 +12,8 @@
     "playwright": "npx playwright test",
     "start": "node start.mjs",
     "start-local": "npm run lint && npm run downport && npm run transpile && node test/index.mjs",
-    "cf:build": "mbt build",
-    "cf:deploy": "cf deploy mta_archives/open-table-maintenance_0.0.1.mtar",
+    "cf:build": "mbt build -s cf/",
+    "cf:deploy": "cf deploy cf/mta_archives/open-table-maintenance_0.0.1.mtar",
     "cf:undeploy": "cf undeploy open-table-maintenance"
   },
   "repository": {
