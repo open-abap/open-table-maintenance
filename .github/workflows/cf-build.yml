@@ -34,8 +34,9 @@ jobs:
         path: ./
     - name: Extract MTAR
       run: unzip open-table-maintenance.mtar
-    - run: cd open-table-maintenance
-    - run: unzip data.zip
-    - run: npm start &
-    - run: sleep 3
-    - run: wget http://localhost:3000/abap
+    - run: |
+        cd open-table-maintenance
+        unzip data.zip
+        npm start &
+        sleep 3
+        wget http://localhost:3000/abap
