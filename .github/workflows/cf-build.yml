@@ -1,0 +1,41 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  cf-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci
+    - name: Install MTA Build Tool
+      run: npm install --no-save mbt
+    - name: Build MTA
+      run: npm run cf:build
+    - name: Upload Artifact
+      uses: actions/upload-artifact@master	
+      with:	
+        name: mta
+        path: ./cf/mta_archives/open-table-maintenance.mtar
+  cf-test-run:
+    needs: cf-build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: mta
+        path: ./
+    - name: Extract MTAR
+      run: tar xfz open-table-maintenance.mtar
+    - run: cd open-table-maintenance
+    - run: unzip data.zip
+    - run: npm start &
+    - run: sleep 3
+    - run: wget http://localhost:3000/abap
