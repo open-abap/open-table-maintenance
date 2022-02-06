@@ -33,7 +33,7 @@ jobs:
         name: mta
         path: ./
     - name: Extract MTAR
-      run: tar xfz open-table-maintenance.mtar
+      run: unzip open-table-maintenance.mtar
     - run: cd open-table-maintenance
     - run: unzip data.zip
     - run: npm start &
