@@ -39,4 +39,4 @@ jobs:
         unzip data.zip
         npm start &
         sleep 3
-        wget http://localhost:3000/abap
+    - run: curl http://localhost:3000/abap
