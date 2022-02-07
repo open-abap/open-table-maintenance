@@ -1,0 +1,23 @@
+ID: open-table-maintenance
+_schema-version: 3.2.0
+description: ABAP table maintenance
+version: 0.0.1
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm run lint
+      - npm run downport
+      - npm run transpile
+      - cp ../package.json ../output/
+      - cp ../test/index.mjs ../output/start.mjs
+      - ./sed.sh 's/..\/output\//.\//g' -i ../output/start.mjs
+modules:
+  - name: open-table-maintenance
+    type: nodejs
+    path: ../output
+    parameters:
+      disk-quota: 512M
+      memory: 128M

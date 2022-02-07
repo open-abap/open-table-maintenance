@@ -1,11 +1,12 @@
 # open-table-maintenance
 
 Works with:
-* [open-abap](https://github.com/open-abap/open-abap) via `npm install && npm start`
+* [open-abap](https://github.com/open-abap/open-abap) via `npm install && npm run start-local`
 * [Steampunk](https://blogs.sap.com/2019/08/20/its-steampunk-now/)
 * [Embedded Steampunk](https://blogs.sap.com/2021/09/30/steampunk-is-going-all-in/)
 * On-Premise v740sp05 and up
 * (Code is automatically downported on build, so it should also work with 702)
+* SAP Business Technology Platform (BTP) Cloud Foundry environment
 
 Install with [abapGit](https://abapgit.org), or copy paste into a system
 
@@ -49,4 +50,28 @@ Warning: only hardcode the table name, don't use with important tables, use at o
       i_reason = CONV #( result-status ) ).
 
   ENDMETHOD.
+```
+
+## Deploy to SAP Business Technology Platform (BTP) Cloud Foundry environment
+
+### Prerequisites
+
+* Cloud Foundry CLI
+* Multi Target App build tool (mbt)
+
+### Installation
+
+Login to your SAP BTP Cloud Foundry environment
+
+```bash
+npm run cf:build
+npm run cf:deploy
+```
+
+Then you can start the app by adding /abap/ at the end of the URL.
+
+### Removal
+
+```bash
+npm run cf:undeploy
 ```

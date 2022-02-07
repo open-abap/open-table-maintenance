@@ -12,7 +12,7 @@ jobs:
       with:
         node-version: '16'
     - run: npm ci
-    - run: npm start &
+    - run: npm run start-local &
     - run: sleep 30
     - run: npx playwright install
     - run: npm run playwright
