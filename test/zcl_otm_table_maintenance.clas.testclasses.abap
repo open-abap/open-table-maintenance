@@ -24,7 +24,7 @@ CLASS ltcl_test IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       act = lines( fields )
-      exp = 2 ).
+      exp = 3 ).
 
   ENDMETHOD.
 
