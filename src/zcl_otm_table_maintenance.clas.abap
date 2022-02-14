@@ -65,7 +65,7 @@ CLASS zcl_otm_table_maintenance DEFINITION
         low        TYPE c LENGTH 10,
         high       TYPE c LENGTH 10,
         option     TYPE c LENGTH 2,
-        ddlanguage TYPE c,
+        ddlanguage TYPE c LENGTH 1,
         ddtext     TYPE c LENGTH 60,
       END OF ty_fixvalue.
     TYPES ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH EMPTY KEY.
