@@ -155,7 +155,9 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '    columnNames = parsed.META.map(n => n.NAME);' && |\n| &&
       '    document.getElementById("content").innerHTML = "";' && |\n| &&
       '    let columnSettings = parsed.META.map(n => {return {' && |\n| &&
+      '      "type": n.FIXVALUES.length > 0 ? "dropdown" : undefined,' && |\n| &&
       '      "title": n.NAME,' && |\n| &&
+      '      "source": n.FIXVALUES.map(f => f.LOW),' && |\n| &&
       '      "width": Math.min(200, n.LENGTH * 20)' && |\n| &&
       '    };});' && |\n| &&
       '    jtable = jspreadsheet(document.getElementById("content"), {' && |\n| &&
