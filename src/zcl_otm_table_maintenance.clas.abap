@@ -58,11 +58,24 @@ CLASS zcl_otm_table_maintenance DEFINITION
         VALUE(xstring) TYPE xstring .
     TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
     METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
+
+* there is no common released type for both steampunk and on-prem, workaround:
+    TYPES:
+      BEGIN OF ty_fixvalue,
+        low        TYPE c LENGTH 10,
+        high       TYPE c LENGTH 10,
+        option     TYPE c LENGTH 2,
+        ddlanguage TYPE c,
+        ddtext     TYPE c LENGTH 60,
+      END OF ty_fixvalue.
+    TYPES ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH EMPTY KEY.
+
     TYPES: BEGIN OF ty_fielddata,
              name      TYPE abap_compname,
              key       TYPE abap_bool,
              type_kind TYPE abap_typekind,
              length    TYPE i,
+             fixvalues TYPE ty_fixvalues,
            END OF ty_fielddata.
     TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
     METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
@@ -192,11 +205,18 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
   METHOD build_metadata.
     DATA lv_key TYPE abap_bool.
+    DATA lo_element TYPE REF TO cl_abap_elemdescr.
+    DATA lt_values TYPE ty_fixvalues.
+
     DATA(lt_key_fields) = list_key_fields( ).
     DATA(lt_components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
       mv_table ) )->get_components( ).
 
     LOOP AT lt_components INTO DATA(ls_component).
+
+      lo_element ?= ls_component-type.
+      lt_values = lo_element->get_ddic_fixed_values( ).
+
       READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
       lv_key = boolc( sy-subrc = 0 ).
       APPEND VALUE #(
@@ -204,6 +224,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
         key       = lv_key
         type_kind = ls_component-type->type_kind
         length    = ls_component-type->length
+        fixvalues = lt_values
         ) TO rt_metadata.
     ENDLOOP.
 
