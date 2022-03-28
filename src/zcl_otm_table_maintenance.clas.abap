@@ -30,6 +30,30 @@ CLASS zcl_otm_table_maintenance DEFINITION
   PROTECTED SECTION.
   PRIVATE SECTION.
 
+    TYPES:
+      ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY .
+    TYPES:
+* there is no common released type for both steampunk and on-prem, workaround:
+      BEGIN OF ty_fixvalue,
+        low        TYPE c LENGTH 10,
+        high       TYPE c LENGTH 10,
+        option     TYPE c LENGTH 2,
+        ddlanguage TYPE c LENGTH 1,
+        ddtext     TYPE c LENGTH 60,
+      END OF ty_fixvalue .
+    TYPES:
+      ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH EMPTY KEY .
+    TYPES:
+      BEGIN OF ty_fielddata,
+        name      TYPE abap_compname,
+        key       TYPE abap_bool,
+        type_kind TYPE abap_typekind,
+        length    TYPE i,
+        fixvalues TYPE ty_fixvalues,
+      END OF ty_fielddata .
+    TYPES:
+      ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY .
+
     DATA mv_table TYPE tabname .
 
     METHODS from_xstring
@@ -45,7 +69,9 @@ CLASS zcl_otm_table_maintenance DEFINITION
         VALUE(rv_json) TYPE string .
     METHODS save_table
       IMPORTING
-        !iv_json TYPE string .
+        !iv_json TYPE string
+      RAISING
+        cx_sy_conversion_data_loss .
     METHODS to_json
       IMPORTING
         !ref           TYPE REF TO data
@@ -56,34 +82,45 @@ CLASS zcl_otm_table_maintenance DEFINITION
         !string        TYPE string
       RETURNING
         VALUE(xstring) TYPE xstring .
-    TYPES ty_names TYPE STANDARD TABLE OF abap_compname WITH EMPTY KEY.
-    METHODS list_key_fields RETURNING VALUE(names) TYPE ty_names.
-
-* there is no common released type for both steampunk and on-prem, workaround:
-    TYPES:
-      BEGIN OF ty_fixvalue,
-        low        TYPE c LENGTH 10,
-        high       TYPE c LENGTH 10,
-        option     TYPE c LENGTH 2,
-        ddlanguage TYPE c LENGTH 1,
-        ddtext     TYPE c LENGTH 60,
-      END OF ty_fixvalue.
-    TYPES ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH EMPTY KEY.
-
-    TYPES: BEGIN OF ty_fielddata,
-             name      TYPE abap_compname,
-             key       TYPE abap_bool,
-             type_kind TYPE abap_typekind,
-             length    TYPE i,
-             fixvalues TYPE ty_fixvalues,
-           END OF ty_fielddata.
-    TYPES ty_metadata TYPE STANDARD TABLE OF ty_fielddata WITH EMPTY KEY.
-    METHODS build_metadata RETURNING VALUE(rt_metadata) TYPE ty_metadata.
+    METHODS list_key_fields
+      RETURNING
+        VALUE(names) TYPE ty_names .
+    METHODS build_metadata
+      RETURNING
+        VALUE(rt_metadata) TYPE ty_metadata .
 ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+
+
+  METHOD build_metadata.
+    DATA lv_key TYPE abap_bool.
+    DATA lo_element TYPE REF TO cl_abap_elemdescr.
+    DATA lt_values TYPE ty_fixvalues.
+
+    DATA(lt_key_fields) = list_key_fields( ).
+    DATA(lt_components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
+      mv_table ) )->get_components( ).
+
+    LOOP AT lt_components INTO DATA(ls_component).
+
+      lo_element ?= ls_component-type.
+      lt_values = lo_element->get_ddic_fixed_values( ).
+
+      READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
+      lv_key = boolc( sy-subrc = 0 ).
+      APPEND VALUE #(
+        name      = ls_component-name
+        key       = lv_key
+        type_kind = ls_component-type->type_kind
+        length    = ls_component-type->length
+        fixvalues = lt_values
+        ) TO rt_metadata.
+    ENDLOOP.
+
+  ENDMETHOD.
 
 
   METHOD constructor.
@@ -205,32 +242,6 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |</html>|.
   ENDMETHOD.
 
-  METHOD build_metadata.
-    DATA lv_key TYPE abap_bool.
-    DATA lo_element TYPE REF TO cl_abap_elemdescr.
-    DATA lt_values TYPE ty_fixvalues.
-
-    DATA(lt_key_fields) = list_key_fields( ).
-    DATA(lt_components) = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name(
-      mv_table ) )->get_components( ).
-
-    LOOP AT lt_components INTO DATA(ls_component).
-
-      lo_element ?= ls_component-type.
-      lt_values = lo_element->get_ddic_fixed_values( ).
-
-      READ TABLE lt_key_fields WITH KEY table_line = ls_component-name TRANSPORTING NO FIELDS.
-      lv_key = boolc( sy-subrc = 0 ).
-      APPEND VALUE #(
-        name      = ls_component-name
-        key       = lv_key
-        type_kind = ls_component-type->type_kind
-        length    = ls_component-type->length
-        fixvalues = lt_values
-        ) TO rt_metadata.
-    ENDLOOP.
-
-  ENDMETHOD.
 
   METHOD list_key_fields.
     DATA obj TYPE REF TO object.
@@ -309,23 +320,26 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
   METHOD serve.
 
-    rs_http-status = 200.
-
-    IF is_request-path CP '*/rest'.
-      IF is_request-method = 'GET'.
-        DATA(lv_body) = read_table( ).
-        rs_http-content_type = 'application/json'.
-      ELSEIF is_request-method = 'POST'.
-        save_table( from_xstring( is_request-body ) ).
-      ELSE.
-        ASSERT 1 = 2.
-      ENDIF.
-    ELSE.
-      lv_body = get_html( ).
-      rs_http-content_type = 'text/html'.
-    ENDIF.
-
-    rs_http-body = to_xstring( lv_body ).
+    TRY.
+        rs_http-status = 200.
+        IF is_request-path CP '*/rest'.
+          IF is_request-method = 'GET'.
+            DATA(lv_body) = read_table( ).
+            rs_http-content_type = 'application/json'.
+          ELSEIF is_request-method = 'POST'.
+            save_table( from_xstring( is_request-body ) ).
+          ELSE.
+            ASSERT 1 = 2.
+          ENDIF.
+        ELSE.
+          lv_body = get_html( ).
+          rs_http-content_type = 'text/html'.
+        ENDIF.
+        rs_http-body = to_xstring( lv_body ).
+      CATCH cx_root.
+        rs_http-status = 500.
+        rs_http-body = 'Error'.
+    ENDTRY.
 
   ENDMETHOD.
 
