@@ -35,7 +35,7 @@ jobs:
     - name: Extract MTAR
       run: unzip open-table-maintenance.mtar
     - name: Start application
-    - run: |
+      run: |
         cd open-table-maintenance
         unzip -q data.zip
         npm start &
