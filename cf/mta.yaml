@@ -15,6 +15,7 @@ build-parameters:
       - cp ../test/index.mjs ../output/start.mjs
       - cp ../test/setup.mjs ../output/setup.mjs
       - ./sed.sh 's/..\/output\//.\//g' -i ../output/start.mjs
+      - ./sed.sh 's/..\/output\//.\//g' -i ../output/setup.mjs
 modules:
   - name: open-table-maintenance
     type: nodejs

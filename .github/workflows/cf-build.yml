@@ -16,8 +16,8 @@ jobs:
     - name: Build MTA
       run: npm run cf:build
     - name: Upload Artifact
-      uses: actions/upload-artifact@master	
-      with:	
+      uses: actions/upload-artifact@master
+      with:
         name: mta
         path: ./cf/mta_archives/open-table-maintenance.mtar
   cf-test-run:
@@ -34,9 +34,10 @@ jobs:
         path: ./
     - name: Extract MTAR
       run: unzip open-table-maintenance.mtar
+    - name: Start application
     - run: |
         cd open-table-maintenance
-        unzip data.zip
+        unzip -q data.zip
         npm start &
         sleep 3
     - run: curl http://localhost:3000/abap
