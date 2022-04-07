@@ -13,6 +13,7 @@ build-parameters:
       - npm run transpile
       - cp ../package.json ../output/
       - cp ../test/index.mjs ../output/start.mjs
+      - mkdir ../output/test/
       - cp ../test/setup.mjs ../output/test/
       - ./sed.sh 's/..\/output\//.\//g' -i ../output/start.mjs
 modules:
