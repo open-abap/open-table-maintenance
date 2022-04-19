@@ -92,7 +92,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD build_metadata.
@@ -338,7 +338,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
         rs_http-body = to_xstring( lv_body ).
       CATCH cx_root.
         rs_http-status = 500.
-        rs_http-body = 'Error'.
+        rs_http-body   = to_xstring( |Exception occurred| ).
     ENDTRY.
 
   ENDMETHOD.
