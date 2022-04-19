@@ -28,7 +28,7 @@
   "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
   "dependencies": {
     "@abaplint/runtime": "^2.0.10",
-    "@abaplint/database-sqlite": "^2.0.10",
+    "@abaplint/database-sqlite": "^2.0.11",
     "express": "^4.17.3"
   },
   "devDependencies": {
