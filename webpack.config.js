@@ -3,6 +3,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = ({mode} = {mode: "development"}) => ({
   entry: {
@@ -48,6 +49,9 @@ module.exports = ({mode} = {mode: "development"}) => ({
       patterns: [
         { from: './node_modules/sql.js/dist/sql-wasm.wasm', to: "./" },
       ],
-    })
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
   ],
 });

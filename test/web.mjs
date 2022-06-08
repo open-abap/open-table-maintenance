@@ -1,14 +1,35 @@
-// import {initializeABAP} from "../output/init.mjs";
-/*
-await initializeABAP();
-*/
-// import {cl_express_icf_shim} from "../output/cl_express_icf_shim.clas.mjs";
-
-async function foo() {
+async function run() {
   const init = await import("../output/init.mjs");
-  console.dir(init);
   await init.initializeABAP();
-  alert("foo");
+  alert("done");
+  const shim = await import("../output/cl_express_icf_shim.clas.mjs");
+
+  let res = {
+    append: (data) => {
+      console.dir("append: " + data); },
+    send: (data) => {
+      console.dir("send");
+      let r = Buffer.from(data).toString();
+
+      // todo, change the source
+      r = r.replace(/\.js">/g, ".js\" async>");
+      document.write(r);
+
+      setTimeout(() => {
+        console.dir("dispatch load");
+        window.dispatchEvent(new Event("load"));
+      }, 1000);
+    },
+    status: (status) => {
+      console.dir("status: " + status);
+      return res; },
+  }
+  let req = {
+    body: "",
+    method: "GET",
+    path: "/"
+  };
+  await shim.cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
 }
 
-foo();
+run();
