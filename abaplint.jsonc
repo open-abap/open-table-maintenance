@@ -13,6 +13,20 @@
     "errorNamespace": "."
   },
   "rules": {
+    "cds_legacy_view": true,
+    "cds_parser_error": true,
+    "classic_exceptions_overlap": true,
+    "local_testclass_consistency": true,
+    "no_aliases": true,
+    "no_external_form_calls": true,
+    "no_inline_in_optional_branches": false,
+    "nrob_consistency": true,
+    "omit_preceding_zeros": true,
+    "pragma_style": true,
+    "prefer_corresponding": true,
+    "slow_parameter_passing": true,
+    "superfluous_value": true,
+    "unnecessary_pragma": true,
     "7bit_ascii": true,
     "abapdoc": false,
     "align_parameters": true,
@@ -27,6 +41,7 @@
       "exclude": [],
       "severity": "Error",
       "define": true,
+      "testSeams": true,
       "statics": true,
       "defaultKey": true,
       "break": true,
@@ -58,7 +73,6 @@
     },
     "check_ddic": true,
     "check_include": true,
-    "check_no_handler_pragma": true,
     "check_subrc": {
       "exclude": [],
       "severity": "Error",
@@ -77,8 +91,6 @@
     "check_text_elements": true,
     "check_transformation_exists": true,
     "class_attribute_names": {
-      "exclude": [],
-      "severity": "Error",
       "patternKind": "required",
       "ignoreNames": [],
       "ignorePatterns": [],
@@ -92,37 +104,22 @@
     "cloud_types": true,
     "colon_missing_space": true,
     "commented_code": {
-      "exclude": [],
-      "severity": "Error",
       "allowIncludeInFugr": true
     },
-    "constant_classes": {
-      "exclude": [],
-      "severity": "Error",
-      "mapping": []
-    },
+    "constant_classes": true,
     "constructor_visibility_public": true,
     "contains_tab": {
       "exclude": [],
       "severity": "Error",
       "spaces": 1
     },
-    "cyclic_oo": {
-      "exclude": [],
-      "severity": "Error",
-      "skip": []
-    },
-    "cyclomatic_complexity": {
-      "exclude": [],
-      "severity": "Error",
-      "max": 20
-    },
+    "cyclic_oo": true,
+    "cyclomatic_complexity": true,
     "dangerous_statement": {
-      "exclude": [],
-      "severity": "Error",
       "execSQL": true,
       "kernelCall": true,
       "systemCall": true,
+      "exportDynpro": true,
       "insertReport": true,
       "generateDynpro": true,
       "generateReport": true,
@@ -130,7 +127,6 @@
       "deleteReport": true,
       "deleteTextpool": true,
       "deleteDynpro": true,
-      "importDynpro": true,
       "dynamicSQL": false
     },
     "db_operation_in_loop": true,
@@ -158,6 +154,7 @@
       "if": true,
       "while": true,
       "case": true,
+      "when": true,
       "select": true,
       "do": true,
       "at": true,
@@ -357,7 +354,6 @@
       "exception": "^LCX_.+$",
       "test": "^LTCL_.+$"
     },
-    "local_testclass_location": true,
     "local_variable_names": false,
     "main_file_contents": true,
     "many_parentheses": true,
@@ -396,16 +392,8 @@
       "logic": "less"
     },
     "no_chained_assignment": true,
-    "no_public_attributes": {
-      "exclude": [],
-      "severity": "Error",
-      "allowReadOnly": false
-    },
-    "no_yoda_conditions": {
-      "exclude": [],
-      "severity": "Error",
-      "onlyConstants": false
-    },
+    "no_public_attributes": true,
+    "no_yoda_conditions": true,
     "object_naming": {
       "exclude": [],
       "severity": "Error",
@@ -432,14 +420,13 @@
       "shlp": "^Z"
     },
     "obsolete_statement": {
-      "exclude": [],
-      "severity": "Error",
       "refresh": true,
       "compute": true,
       "add": true,
       "subtract": true,
       "multiply": true,
       "divide": true,
+      "occurences": true,
       "move": true,
       "requested": true,
       "occurs": true,
@@ -464,7 +451,6 @@
     "parser_702_chaining": true,
     "parser_error": true,
     "parser_missing_space": true,
-    "pragma_placement": true,
     "prefer_inline": false,
     "prefer_is_not": true,
     "prefer_raise_exception_new": true,
