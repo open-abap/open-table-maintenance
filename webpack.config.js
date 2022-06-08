@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = ({mode} = {mode: "development"}) => ({
   entry: {
@@ -37,18 +38,16 @@ module.exports = ({mode} = {mode: "development"}) => ({
   },
   module: {
     rules: [
-      /*
-      {
-        test: /.m?js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-      }
-      */
-    ],
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "test/index.html",
     }),
+    new CopyPlugin({
+      patterns: [
+        { from: './node_modules/sql.js/dist/sql-wasm.wasm', to: "./" },
+      ],
+    })
   ],
 });
