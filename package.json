@@ -10,10 +10,10 @@
     "test": "npm run lint && npm run downport && npm run unit",
     "downport": "rm -rf downport && cp -r src downport && cp test/*.abap downport && cp test/*.xml downport && abaplint --fix abaplint-downport.jsonc",
     "playwright": "npx playwright test",
-    "start": "node start.mjs",
     "start-local": "npm run lint && npm run downport && npm run transpile && node test/index.mjs",
     "cf:build": "mbt build -s cf/ --mtar open-table-maintenance.mtar",
     "cf:deploy": "cf deploy cf/mta_archives/open-table-maintenance.mtar",
+    "web": "webpack serve --mode development --env development",
     "cf:undeploy": "cf undeploy open-table-maintenance"
   },
   "repository": {
@@ -27,11 +27,18 @@
   },
   "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
   "dependencies": {
-    "@abaplint/runtime": "^2.0.37",
-    "@abaplint/database-sqlite": "^2.0.30",
-    "express": "^4.18.1",
     "@abaplint/cli": "^2.91.2",
+    "@abaplint/database-sqlite": "^2.0.30",
+    "@abaplint/runtime": "^2.0.37",
+    "@abaplint/transpiler-cli": "^2.0.37",
     "@playwright/test": "^1.22.2",
-    "@abaplint/transpiler-cli": "^2.0.37"
+    "babel-loader": "^8.2.5",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "express": "^4.18.1",
+    "html-webpack-plugin": "^5.5.0",
+    "path-browserify": "^1.0.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.2"
   }
 }
