@@ -92,7 +92,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD build_metadata.
@@ -166,8 +166,8 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |<html>\n| &&
       |<head>\n| &&
       |<title>open-table-maintenance</title>\n| &&
-      |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>\n| &&
-      |<script src="https://jsuites.net/v4/jsuites.js"></script>\n| &&
+      |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js" async></script>\n| &&
+      |<script src="https://jsuites.net/v4/jsuites.js" async></script>\n| &&
       |<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />\n| &&
       |<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />\n| &&
       |<script>\n| &&
