@@ -178,7 +178,6 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '  fetch(url).then((response) => {' && |\n| &&
       '    return response.json();' && |\n| &&
       '    }).then((parsed) => {' && |\n| &&
-      '    console.dir(parsed);' && |\n| &&
       '    document.getElementById("tablename").innerHTML = ' && |\n| &&
       '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
       '       parsed.SY.SYSID + "-" + parsed.SY.MANDT + "</tt>";' && |\n| &&
@@ -224,12 +223,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '}' && |\n| &&
       'function save() {' && |\n| &&
       '  const body = {"DATA": jtable.getData().map(toObject)};' && |\n| &&
-      '  const Http = new XMLHttpRequest();' && |\n| &&
-      '  Http.open("POST", url);' && |\n| &&
-      '  Http.send(JSON.stringify(body));' && |\n| &&
-      '  Http.onloadend = (e) => {' && |\n| &&
-      '    alert("data saved");' && |\n| &&
-      '  }' && |\n| &&
+      '  fetch(url, {method: "POST", body: JSON.stringify(body)}).then(() => {alert("data saved");});' && |\n| &&
       '}' && |\n| &&
       |</script>\n| &&
       |</head>\n| &&
