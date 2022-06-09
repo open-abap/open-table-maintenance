@@ -175,11 +175,10 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       'let columnNames;' && |\n| &&
       'const url = window.location.pathname + "/rest";' && |\n| &&
       'function run() {' && |\n| &&
-      '  const Http = new XMLHttpRequest();' && |\n| &&
-      '  Http.open("GET", url);' && |\n| &&
-      '  Http.send();' && |\n| &&
-      '  Http.onloadend = (e) => {' && |\n| &&
-      '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
+      '  fetch(url).then((response) => {' && |\n| &&
+      '    return response.json();' && |\n| &&
+      '    }).then((parsed) => {' && |\n| &&
+      '    console.dir(parsed);' && |\n| &&
       '    document.getElementById("tablename").innerHTML = ' && |\n| &&
       '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
       '       parsed.SY.SYSID + "-" + parsed.SY.MANDT + "</tt>";' && |\n| &&
@@ -214,7 +213,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '        }' && |\n| &&
       '      },' && |\n| &&
       '      columns: columnSettings});' && |\n| &&
-      '  }' && |\n| &&
+      '  });' && |\n| &&
       '}' && |\n| &&
       'function toObject(row) {' && |\n| &&
       '  let ret = {};' && |\n| &&
