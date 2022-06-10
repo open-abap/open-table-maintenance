@@ -13,6 +13,10 @@ async function run() {
 
       document.write(r);
 
+      globalThis.fetch = (a) => {
+        console.dir("fetch1");
+      };
+
       setTimeout(() => {
         console.dir("dispatch load");
         window.dispatchEvent(new Event("load"));
