@@ -1,7 +1,6 @@
 async function run() {
   const init = await import("../output/init.mjs");
   await init.initializeABAP();
-  alert("done");
   const shim = await import("../output/cl_express_icf_shim.clas.mjs");
 
   let res = {
@@ -13,8 +12,11 @@ async function run() {
 
       document.write(r);
 
-      globalThis.fetch = (a) => {
+      globalThis.fetch = (url, options) => {
         console.dir("fetch1");
+        console.dir(url);
+        console.dir(options);
+//        shim.cl_express_icf_shim.run({req: {body: "", method: "GET", path: "/rest"}, res, class: "ZCL_HTTP_HANDLER"});
       };
 
       setTimeout(() => {
@@ -26,12 +28,8 @@ async function run() {
       console.dir("status: " + status);
       return res; },
   }
-  let req = {
-    body: "",
-    method: "GET",
-    path: "/"
-  };
-  await shim.cl_express_icf_shim.run({req, res, class: "ZCL_HTTP_HANDLER"});
+
+  await shim.cl_express_icf_shim.run({req: {body: "", method: "GET", path: "/"}, res, class: "ZCL_HTTP_HANDLER"});
 }
 
 run();
