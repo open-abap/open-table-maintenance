@@ -11,8 +11,6 @@ async function run() {
       console.dir("send");
       let r = Buffer.from(data).toString();
 
-      // todo, change the source
-      r = r.replace(/\.js">/g, ".js\" async>");
       document.write(r);
 
       setTimeout(() => {
