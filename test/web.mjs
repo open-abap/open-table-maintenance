@@ -28,7 +28,7 @@ async function redirectFetch(url, options) {
 
   return new Promise((resolve, reject) => {
     const req = {
-      body: body,
+      body: Buffer.from(body).toString("hex"),
       method: method,
       path: url,
     };
