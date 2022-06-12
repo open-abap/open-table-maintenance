@@ -92,7 +92,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
+CLASS zcl_otm_table_maintenance IMPLEMENTATION.
 
 
   METHOD build_metadata.
@@ -179,7 +179,7 @@ CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
       '    return response.json();' && |\n| &&
       '    }).then((parsed) => {' && |\n| &&
       '    document.getElementById("tablename").innerHTML = ' && |\n| &&
-      '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
+      '      "<h1 style=\"display:inline\">hello " + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
       '       parsed.SY.SYSID + "-" + parsed.SY.MANDT + "</tt>";' && |\n| &&
       '    const data = parsed.DATA;' && |\n| &&
       '    if (data.length === 0) { ' && |\n| &&
