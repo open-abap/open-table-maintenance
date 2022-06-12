@@ -92,7 +92,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_otm_table_maintenance IMPLEMENTATION.
+CLASS ZCL_OTM_TABLE_MAINTENANCE IMPLEMENTATION.
 
 
   METHOD build_metadata.
@@ -166,8 +166,8 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       |<html>\n| &&
       |<head>\n| &&
       |<title>open-table-maintenance</title>\n| &&
-      |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>\n| &&
-      |<script src="https://jsuites.net/v4/jsuites.js"></script>\n| &&
+      |<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js" async></script>\n| &&
+      |<script src="https://jsuites.net/v4/jsuites.js" async></script>\n| &&
       |<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />\n| &&
       |<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />\n| &&
       |<script>\n| &&
@@ -175,11 +175,9 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       'let columnNames;' && |\n| &&
       'const url = window.location.pathname + "/rest";' && |\n| &&
       'function run() {' && |\n| &&
-      '  const Http = new XMLHttpRequest();' && |\n| &&
-      '  Http.open("GET", url);' && |\n| &&
-      '  Http.send();' && |\n| &&
-      '  Http.onloadend = (e) => {' && |\n| &&
-      '    const parsed = JSON.parse(Http.responseText);' && |\n| &&
+      '  fetch(url).then((response) => {' && |\n| &&
+      '    return response.json();' && |\n| &&
+      '    }).then((parsed) => {' && |\n| &&
       '    document.getElementById("tablename").innerHTML = ' && |\n| &&
       '      "<h1 style=\"display:inline\">" + parsed.TABLENAME + "</h1>&nbsp;<tt>" + ' && |\n| &&
       '       parsed.SY.SYSID + "-" + parsed.SY.MANDT + "</tt>";' && |\n| &&
@@ -214,7 +212,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '        }' && |\n| &&
       '      },' && |\n| &&
       '      columns: columnSettings});' && |\n| &&
-      '  }' && |\n| &&
+      '  });' && |\n| &&
       '}' && |\n| &&
       'function toObject(row) {' && |\n| &&
       '  let ret = {};' && |\n| &&
@@ -225,12 +223,7 @@ CLASS zcl_otm_table_maintenance IMPLEMENTATION.
       '}' && |\n| &&
       'function save() {' && |\n| &&
       '  const body = {"DATA": jtable.getData().map(toObject)};' && |\n| &&
-      '  const Http = new XMLHttpRequest();' && |\n| &&
-      '  Http.open("POST", url);' && |\n| &&
-      '  Http.send(JSON.stringify(body));' && |\n| &&
-      '  Http.onloadend = (e) => {' && |\n| &&
-      '    alert("data saved");' && |\n| &&
-      '  }' && |\n| &&
+      '  fetch(url, {method: "POST", body: JSON.stringify(body)}).then(() => {alert("data saved");});' && |\n| &&
       '}' && |\n| &&
       |</script>\n| &&
       |</head>\n| &&

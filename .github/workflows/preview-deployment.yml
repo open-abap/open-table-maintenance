@@ -1,0 +1,52 @@
+name: preview-deployment
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: npm install
+      run: |
+        npm install
+        npm test
+        npm run web:build
+
+    - name: deploy-merged-build
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.PREVIEW_DEPLOYMENTS_WRITE }}
+        external_repository: open-abap/preview-deployments
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        publish_branch: main
+        publish_dir: ./build
+        destination_dir: ${{ github.sha }}
+
+    - name: Find Comment
+      uses: peter-evans/find-comment@v2
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: preview-deployment
+
+    - name: Create or update comment
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          preview-deployment:
+          https://open-abap.github.io/preview-deployments/${{ github.sha }}/
+        edit-mode: replace
