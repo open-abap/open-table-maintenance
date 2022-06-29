@@ -17,34 +17,19 @@ async function redirectFetch(url, options) {
       return res; },
   }
 
-  let method = options?.method;
-  if (method === undefined) {
-    method = "GET";
-  }
-  let body = options?.body;
-  if (body === undefined) {
-    body = "";
-  }
+  const method = options?.method || "GET";
+  const body = options?.body || "";
 
-  return new Promise((resolve, reject) => {
-    const req = {
-      body: Buffer.from(body).toString("hex"),
-      method: method,
-      path: url,
-    };
-    console.dir(req);
-    shim.cl_express_icf_shim.run({req: req, res, class: "ZCL_HTTP_HANDLER"}).then(() => {
-      console.log("redirectFetch RESPONSE,");
-      console.dir(data);
-      resolve({
-        json: () => {
-          return new Promise((resolve, reject) => {
-            resolve(JSON.parse(data));
-          });
-        }
-      });
-    });
-  });
+  const req = {
+    body: Buffer.from(body).toString("hex"),
+    method: method,
+    path: url,
+  };
+  console.dir(req);
+  await shim.cl_express_icf_shim.run({req: req, res, class: "ZCL_HTTP_HANDLER"})
+  console.log("redirectFetch RESPONSE,");
+  console.dir(data);
+  return { json: async () => JSON.parse(data)};  
 }
 
 async function run() {
