@@ -485,20 +485,8 @@
     "rfc_error_handling": true,
     "select_add_order_by": true,
     "select_performance": false,
-    "selection_screen_naming": {
-      "exclude": [],
-      "severity": "Error",
-      "patternKind": "required",
-      "ignoreNames": [],
-      "ignorePatterns": [],
-      "parameter": "^P_.+$",
-      "selectOption": "^S_.+$"
-    },
-    "sequential_blank": {
-      "exclude": [],
-      "severity": "Error",
-      "lines": 4
-    },
+    "selection_screen_naming": true,
+    "sequential_blank": true,
     "short_case": {
       "exclude": [],
       "severity": "Error",
