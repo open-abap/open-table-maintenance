@@ -1,6 +1,5 @@
-const init = await import("../output/init.mjs");
-await init.initializeABAP();
-const shim = await import("../output/cl_express_icf_shim.clas.mjs");
+import {initializeABAP} from "../output/_init.mjs";
+await initializeABAP();
 
 async function redirectFetch(url, options) {
   let data = "";
@@ -26,10 +25,10 @@ async function redirectFetch(url, options) {
     path: url,
   };
   console.dir(req);
-  await shim.cl_express_icf_shim.run({req: req, res, class: "ZCL_HTTP_HANDLER"})
+  await abap.Classes["CL_EXPRESS_ICF_SHIM"].run({req: req, res, class: "ZCL_HTTP_HANDLER"})
   console.log("redirectFetch RESPONSE,");
   console.dir(data);
-  return { json: async () => JSON.parse(data)};  
+  return { json: async () => JSON.parse(data)};
 }
 
 async function run() {
@@ -40,7 +39,27 @@ async function run() {
       console.dir("send");
       let r = Buffer.from(data).toString();
 
-      document.write(r);
+      // document.write() doesnt work when loaded from async script
+      document.documentElement.innerHTML = r;
+
+      // and setting innerHTML does not automatically load/initialize the scripts
+      const scripts = Array.from(document.getElementsByTagName("script"));
+{
+      var myScript = document.createElement('script');
+      myScript.src = scripts[0].src;
+      document.head.appendChild(myScript);
+}
+{
+      var myScript = document.createElement('script');
+      myScript.src = scripts[1].src;
+      document.head.appendChild(myScript);
+}
+{
+      var myScript = document.createElement('script');
+      myScript.textContent = scripts[2].textContent;
+      document.head.appendChild(myScript);
+}
+
       globalThis.fetch = redirectFetch;
 
       setTimeout(() => {
@@ -53,7 +72,7 @@ async function run() {
       return res; },
   }
 
-  await shim.cl_express_icf_shim.run({req: {body: "", method: "GET", path: ""}, res, class: "ZCL_HTTP_HANDLER"});
+  await abap.Classes["CL_EXPRESS_ICF_SHIM"].run({req: {body: "", method: "GET", path: ""}, res, class: "ZCL_HTTP_HANDLER"});
 }
 
 run();

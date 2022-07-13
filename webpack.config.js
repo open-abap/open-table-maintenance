@@ -10,6 +10,7 @@ module.exports = ({mode} = {mode: "development"}) => ({
     "app": "./test/web.mjs",
   },
   mode,
+//  devtool: "inline-source-map",
   experiments: {
     topLevelAwait: true
   },
