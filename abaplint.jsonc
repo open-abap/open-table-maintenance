@@ -4,7 +4,7 @@
   },
   "dependencies": [
     {
-      "url": "https://github.com/abapedia/steampunk-2202-api",
+      "url": "https://github.com/abapedia/steampunk-2208-api",
       "files": "/src/**/*.*"
     }
   ],
@@ -424,6 +424,7 @@
       "compute": true,
       "add": true,
       "subtract": true,
+      "clientSpecified": false,
       "multiply": true,
       "divide": true,
       "occurences": true,
