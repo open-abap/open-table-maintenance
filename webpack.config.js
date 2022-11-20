@@ -30,6 +30,7 @@ module.exports = ({mode} = {mode: "development"}) => ({
       "crypto": require.resolve("crypto-browserify"),
       "path": require.resolve("path-browserify"),
       "buffer": require.resolve("buffer/"),
+      "util": require.resolve("web-encoding"),
       "zlib": false,
       "stream": false,
       "http": false,
