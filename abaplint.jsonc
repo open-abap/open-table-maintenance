@@ -422,6 +422,9 @@
     "obsolete_statement": {
       "refresh": true,
       "compute": true,
+      "clientSpecified": true,
+      "formDefinition": true,
+      "formImplementation": true,
       "add": true,
       "subtract": true,
       "multiply": true,
