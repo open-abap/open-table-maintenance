@@ -28,20 +28,20 @@
   },
   "homepage": "https://github.com/open-abap/open-table-maintenance#readme",
   "dependencies": {
-    "@abaplint/cli": "^2.97.7",
+    "@abaplint/cli": "^2.97.17",
     "@abaplint/database-sqlite": "^2.6.0",
-    "@abaplint/runtime": "^2.6.2",
-    "@abaplint/transpiler-cli": "^2.6.2",
-    "@playwright/test": "^1.32.2",
+    "@abaplint/runtime": "^2.6.30",
+    "@abaplint/transpiler-cli": "^2.6.30",
+    "@playwright/test": "^1.32.3",
     "babel-loader": "^9.1.2",
     "buffer": "^6.0.3",
     "web-encoding": "^1.1.5",
     "copy-webpack-plugin": "^11.0.0",
     "crypto-browserify": "^3.12.0",
     "express": "^4.18.2",
-    "html-webpack-plugin": "^5.5.0",
+    "html-webpack-plugin": "^5.5.1",
     "path-browserify": "^1.0.1",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.2"
+    "webpack-cli": "^5.0.2",
+    "webpack-dev-server": "^4.13.3"
   }
 }
