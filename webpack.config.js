@@ -10,7 +10,7 @@ module.exports = ({mode} = {mode: "development"}) => ({
     "app": "./test/web.mjs",
   },
   mode,
-//  devtool: "inline-source-map",
+  devtool: "nosources-source-map",
   experiments: {
     topLevelAwait: true
   },
@@ -34,6 +34,7 @@ module.exports = ({mode} = {mode: "development"}) => ({
       "util": require.resolve("web-encoding"),
       "zlib": false,
       "stream": false,
+      "process": false,
       "http": false,
       "url": false,
       "fs": false,
@@ -53,9 +54,12 @@ module.exports = ({mode} = {mode: "development"}) => ({
     new CopyPlugin({
       patterns: [
         { from: './node_modules/sql.js/dist/sql-wasm.wasm', to: "./" },
+        { from: './node_modules/sql.js/dist/sql-wasm-debug.wasm', to: "./" },
+        { from: './node_modules/sql.js/dist/sql-wasm-debug.js', to: "./" },
       ],
     }),
     new webpack.ProvidePlugin({
+      process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
     }),
   ],

@@ -23,6 +23,7 @@ async function redirectFetch(url, options) {
     body: Buffer.from(body).toString("hex"),
     method: method,
     path: url,
+    url: url,
   };
   console.dir(req);
   await abap.Classes["CL_EXPRESS_ICF_SHIM"].run({req: req, res, class: "ZCL_HTTP_HANDLER"})
@@ -72,7 +73,7 @@ async function run() {
       return res; },
   }
 
-  await abap.Classes["CL_EXPRESS_ICF_SHIM"].run({req: {body: "", method: "GET", path: ""}, res, class: "ZCL_HTTP_HANDLER"});
+  await abap.Classes["CL_EXPRESS_ICF_SHIM"].run({req: {body: "", method: "GET", path: "", url: ""}, res, class: "ZCL_HTTP_HANDLER"});
 }
 
 run();
