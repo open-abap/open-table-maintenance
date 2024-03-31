@@ -38,6 +38,7 @@ module.exports = ({mode} = {mode: "development"}) => ({
       "http": false,
       "url": false,
       "fs": false,
+      "tls": false,
       "https": false,
       "net": false,
     },
