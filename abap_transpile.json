@@ -4,7 +4,7 @@
   "output_folder": "output",
   "libs": [
     {
-      "url": "https://github.com/open-abap/open-abap"
+      "url": "https://github.com/open-abap/open-abap-core"
     },
     {
       "url": "https://github.com/open-abap/express-icf-shim"
