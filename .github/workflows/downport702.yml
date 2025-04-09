@@ -7,16 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
     - run: npm ci
     - run: npm run lint
     - run: npm run downport
     - run: rm src/*
     - run: cp downport/* src/
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: downport702
         path: |
