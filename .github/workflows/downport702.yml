@@ -14,7 +14,7 @@ jobs:
     - run: npm run downport
     - run: rm src/*
     - run: cp downport/* src/
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: downport702
         path: |
