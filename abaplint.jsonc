@@ -15,6 +15,7 @@
   "rules": {
     "cds_legacy_view": true,
     "cds_parser_error": true,
+    "omit_preceding_zeros": true,
     "classic_exceptions_overlap": true,
     "local_testclass_consistency": true,
     "no_aliases": true,
