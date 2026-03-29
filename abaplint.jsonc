@@ -44,7 +44,7 @@
       "define": true,
       "testSeams": true,
       "statics": true,
-      "defaultKey": true,
+      "defaultKey": false,
       "break": true,
       "describeLines": true
     },

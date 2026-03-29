@@ -42,7 +42,7 @@ CLASS zcl_otm_table_maintenance DEFINITION
         ddtext     TYPE c LENGTH 60,
       END OF ty_fixvalue .
     TYPES:
-      ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH EMPTY KEY .
+      ty_fixvalues TYPE STANDARD TABLE OF ty_fixvalue WITH DEFAULT KEY .
     TYPES:
       BEGIN OF ty_fielddata,
         name      TYPE abap_compname,
